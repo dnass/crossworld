@@ -5,7 +5,7 @@
 	// import { interpolate } from 'flubber';
 	import { hoveredClue, pickedClue, guessed } from '../store';
 
-	export let id, number, d, x, y;
+	export let id, name, number, d, x, y;
 
 	const size = 25;
 
@@ -47,8 +47,21 @@
 			transform="translate({x}, {y})"
 			style:font-size="{size * 0.8}px"
 			x={size / 2}
-			y={size * 0.8}>{number + 1}</text
+			y={size * 0.8}
 		>
+			{number + 1}
+		</text>
+	{:else}
+		<text
+			transition:fade
+			transform="translate({x}, {y})"
+			style:font-size="{size * 0.6}px"
+			class="label"
+			x={size / 2}
+			y={size * 0.6}
+		>
+			{name}
+		</text>
 	{/if}
 </g>
 
@@ -59,6 +72,16 @@
 
 	text {
 		text-anchor: middle;
+
+		&.label {
+			font-weight: 700;
+			fill: white;
+			stroke: tomato;
+			stroke-width: 4;
+			paint-order: stroke;
+			stroke-linejoin: round;
+			stroke-linecap: round;
+		}
 	}
 
 	path {

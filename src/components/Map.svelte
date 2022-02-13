@@ -10,7 +10,7 @@
 		geoNaturalEarth1
 	};
 
-	const pad = 10;
+	const pad = 20;
 
 	let _width = 640;
 	$: width = Math.min(_width, 640);
@@ -35,9 +35,9 @@
 
 <div bind:clientWidth={_width}>
 	<svg {width} height={width}>
-		{#each clues as { feature, id, number }}
+		{#each clues as { feature, id, name, number }}
 			{@const [x, y] = path.centroid(feature)}
-			<Country {id} {number} d={path(feature)} {x} {y} />
+			<Country {id} {name} {number} d={path(feature)} {x} {y} />
 		{/each}
 	</svg>
 

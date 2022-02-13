@@ -12,7 +12,7 @@ export const clues = gameData.clues.map((clue, number) => {
 		feature.geometry.coordinates.sort(([a], [b]) => b.length - a.length);
 	}
 
-	return { number, ...clue, feature };
+	return { number, ...clue, name: feature.properties.name, feature };
 });
 
 export const rotation = gameData.rotation;
