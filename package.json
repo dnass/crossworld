@@ -1,0 +1,30 @@
+{
+	"name": "crossworld",
+	"version": "0.1.0",
+	"scripts": {
+		"dev": "svelte-kit dev",
+		"build": "svelte-kit build",
+		"package": "svelte-kit package",
+		"preview": "svelte-kit preview",
+		"lint": "prettier --ignore-path .gitignore --check --plugin-search-dir=. .",
+		"format": "prettier --ignore-path .gitignore --write --plugin-search-dir=. ."
+	},
+	"devDependencies": {
+		"@sveltejs/adapter-auto": "next",
+		"@sveltejs/kit": "next",
+		"prettier": "^2.5.1",
+		"prettier-plugin-svelte": "^2.5.0",
+		"sass": "^1.49.7",
+		"simple-svelte-autocomplete": "^2.2.4",
+		"svelte": "^3.44.0",
+		"svelte-preprocess": "^4.10.3"
+	},
+	"type": "module",
+	"dependencies": {
+		"d3-geo": "^3.0.1",
+		"flubber": "^0.4.2",
+		"smartquotes": "^2.3.2",
+		"topojson-client": "^3.1.0",
+		"world-atlas": "^2.0.2"
+	}
+}

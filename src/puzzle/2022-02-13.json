@@ -1,0 +1,27 @@
+{
+	"date": "2022-02-13",
+	"rotation": 90,
+	"projection": "geoTransverseMercator",
+	"clues": [
+		{
+			"id": "246",
+			"clue": "A land of \"alphabet soup gone crazy,\" per <em>60 Minutes</em>"
+		},
+		{
+			"id": "352",
+			"clue": "Its population is about the same as Cleveland's"
+		},
+		{
+			"id": "578",
+			"clue": "Fjord world headquarters?"
+		},
+		{
+			"id": "752",
+			"clue": "Birthplace of the Klubbsporre, Hauga, and Råskog, among others"
+		},
+		{
+			"id": "208",
+			"clue": "Hamlet's hamlet"
+		}
+	]
+}
