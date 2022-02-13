@@ -38,7 +38,10 @@ export const hoveredClue = writable(null);
 
 export const guessed = writable(new Array(get(clues).length).fill(null));
 
-export const win = derived(guessed, ($guessed) => $guessed.filter(Boolean).length === clues.length);
+export const win = derived(
+	[guessed, clues],
+	([$guessed, $clues]) => $guessed.filter(Boolean).length === $clues.length
+);
 
 export const showNorth = writable(false);
 
