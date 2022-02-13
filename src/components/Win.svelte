@@ -1,4 +1,8 @@
-<div>
+<script>
+	import { fade } from 'svelte/transition';
+</script>
+
+<div transition:fade={{ delay: 500 }}>
 	<h2>You won!</h2>
 </div>
 

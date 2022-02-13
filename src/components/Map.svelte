@@ -1,7 +1,7 @@
 <script>
 	import { geoTransverseMercator, geoNaturalEarth1, geoPath } from 'd3-geo';
 	import Country from './Country.svelte';
-	import Win from '../components/Win.svelte';
+	import Win from './Win.svelte';
 	import { clues, rotation, projection } from '../puzzle';
 	import { win, showNorth } from '../store';
 

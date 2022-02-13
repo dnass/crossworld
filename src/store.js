@@ -40,6 +40,8 @@ const getNextClue = (reverse = false) => {
 };
 
 guessed.subscribe(() => {
+	if (get(guessed)[get(pickedClue)] !== get(pickedCountry)) return;
+
 	pickedClue.set(getNextClue());
 	hoveredClue.set(null);
 });

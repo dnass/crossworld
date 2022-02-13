@@ -2,7 +2,7 @@
 	import { tweened } from 'svelte/motion';
 	import { quadOut as easing } from 'svelte/easing';
 	import { fade } from 'svelte/transition';
-	import { interpolate } from 'flubber';
+	// import { interpolate } from 'flubber';
 	import { hoveredClue, pickedClue, guessed } from '../store';
 
 	export let id, number, d, x, y;
@@ -21,8 +21,7 @@
 
 	const path = tweened(initialPath, {
 		easing,
-		duration: 750,
-		interpolate: (a, b) => interpolate(a, b, { maxSegmentLength: 100 })
+		duration: 0
 	});
 
 	$: path.set(initialPath);
