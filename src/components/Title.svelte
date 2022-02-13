@@ -8,7 +8,7 @@
 	h1 {
 		text-transform: uppercase;
 		font-weight: 900;
-		margin: 0 0 0.5em;
+		margin: 0;
 	}
 
 	span {

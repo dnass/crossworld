@@ -1,5 +1,5 @@
 <script>
-	import Picker from './Picker.svelte';
+	import CountrySearch from './CountrySearch.svelte';
 	import { smartquotes } from '../utils';
 	import { hoveredClue, pickedClue, guessed } from '../store';
 
@@ -20,7 +20,7 @@
 	<div>
 		<p>{@html smartquotes(clue)}</p>
 		{#if picked && !correct}
-			<Picker />
+			<CountrySearch />
 		{/if}
 	</div>
 </li>

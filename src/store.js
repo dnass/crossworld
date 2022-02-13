@@ -1,12 +1,37 @@
 import { browser } from '$app/env';
 import { writable, derived, get } from 'svelte/store';
-import { clues } from './puzzle';
+import { countries } from './data';
+import puzzles from './puzzles';
+
+export const currentPuzzle = writable(0);
+
+const gameData = derived(currentPuzzle, ($currentPuzzle) => puzzles[$currentPuzzle]);
+
+export const gameCountries = derived(gameData, ($gameData) =>
+	$gameData.clues.map(({ country }) => country)
+);
+
+export const clues = derived(gameData, ($gameData) =>
+	$gameData.clues.map((clue, number) => {
+		const feature = countries.find(({ id }) => id === clue.id);
+
+		if (feature.geometry.type === 'MultiPolygon') {
+			feature.geometry.coordinates.sort(([a], [b]) => b.length - a.length);
+		}
+
+		return { number, ...clue, name: feature.properties.name, feature };
+	})
+);
+
+export const rotation = derived(gameData, ($gameData) => $gameData.rotation);
+
+export const projection = derived(gameData, ($gameData) => $gameData.projection);
 
 export const pickedClue = writable(0);
 
 export const pickedCountry = derived(
-	pickedClue,
-	($pickedClue) => clues.find((clue) => clue.number === $pickedClue).id
+	[clues, pickedClue],
+	([$clues, $pickedClue]) => $clues.find((clue) => clue.number === $pickedClue).id
 );
 
 export const hoveredClue = writable(null);

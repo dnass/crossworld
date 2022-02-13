@@ -1,0 +1,11 @@
+{
+	"date": "2022-02-14",
+	"rotation": 70,
+	"projection": "geoTransverseMercator",
+	"clues": [
+		{
+			"id": "840",
+			"clue": "The USA"
+		}
+	]
+}

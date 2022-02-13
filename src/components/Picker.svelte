@@ -1,69 +1,23 @@
 <script>
-	import { onMount } from 'svelte';
-	import AutoComplete from 'simple-svelte-autocomplete';
-	import { countryList } from '../data';
-	import { pickedClue, pickedCountry, guessed } from '../store';
+	import { timeFormat } from 'd3-time-format';
+	import { currentPuzzle } from '../store';
+	import puzzles from '../puzzles';
 
-	let guessedCountry = null,
-		guessedOnce = false;
-
-	const search = () => {
-		return countryList;
-	};
-
-	$: if (guessedCountry) {
-		if (guessedCountry.id === $pickedCountry) {
-			const newGuesses = [...$guessed];
-			newGuesses[$pickedClue] = guessedCountry.id;
-			$guessed = newGuesses;
-		}
-
-		guessedOnce = true;
-		guessedCountry = null;
-	}
-
-	onMount(() => {
-		const input = document.querySelector('#country-picker');
-		input.type = 'search';
-		input.focus();
-	});
+	const format = timeFormat('%b %d, %Y');
 </script>
 
-<AutoComplete
-	inputId="country-picker"
-	labelFieldName="name"
-	valueFieldName="number"
-	placeholder={guessedOnce ? 'Nope, guess again...' : 'Guess a country...'}
-	hideArrow
-	noResultsText=""
-	maxItemsToShowInList={5}
-	searchFunction={search}
-	bind:selectedItem={guessedCountry}
-/>
+<div>
+	<label for="puzzle-picker">Pick a puzzle</label>
+	<select id="puzzle-picker" bind:value={$currentPuzzle}>
+		{#each puzzles as puzzle, i}
+			<option value={i}>{format(new Date(`${puzzle.date}T00:00:00`))}</option>
+		{/each}
+	</select>
+</div>
 
-<style type="text/scss">
-	:global(.autocomplete) {
+<style>
+	label {
 		font-size: 0.8em;
-	}
-
-	:global(.autocomplete-list-item b) {
-		font-weight: normal;
-	}
-
-	:global(.autocomplete-list-item.selected) {
-		background-color: #ccc !important;
-		color: black !important;
-	}
-
-	:global(.autocomplete-list) {
-		padding: 0 !important;
-	}
-
-	:global(.autocomplete-list-item-no-results) {
-		display: none;
-	}
-
-	:global(.autocomplete-input) {
-		border: 1px solid #ccc;
+		opacity: 0.5;
 	}
 </style>
