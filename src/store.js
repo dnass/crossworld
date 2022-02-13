@@ -36,7 +36,7 @@ export const pickedCountry = derived(
 
 export const hoveredClue = writable(null);
 
-export const guessed = writable(new Array(clues.length).fill(null));
+export const guessed = writable(new Array(get(clues).length).fill(null));
 
 export const win = derived(guessed, ($guessed) => $guessed.filter(Boolean).length === clues.length);
 
