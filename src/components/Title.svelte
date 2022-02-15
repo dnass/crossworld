@@ -9,12 +9,13 @@
 		text-transform: uppercase;
 		font-weight: 900;
 		margin: 0;
+		line-height: 1;
 	}
 
 	span {
 		&:before {
 			content: '🌍';
-			filter: grayscale(1) sepia(1) saturate(3) hue-rotate(-46deg);
+			filter: grayscale(1) sepia(1) saturate(3) hue-rotate(202deg);
 			display: inline-block;
 			transform-style: preserve-3d;
 		}

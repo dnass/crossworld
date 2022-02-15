@@ -1,15 +1,12 @@
 <script>
 	import { onMount } from 'svelte';
 	import AutoComplete from 'simple-svelte-autocomplete';
-	import { countryList } from '../data';
+	import { countryList } from '../geo';
 	import { pickedClue, pickedCountry, guessed } from '../store';
 
 	let guessedCountry = null,
-		guessedOnce = false;
-
-	const search = () => {
-		return countryList;
-	};
+		guessedOnce = false,
+		blink = false;
 
 	$: if (guessedCountry) {
 		if (guessedCountry.id === $pickedCountry) {
@@ -19,7 +16,10 @@
 		}
 
 		guessedOnce = true;
+		blink = true;
 		guessedCountry = null;
+
+		setTimeout(() => (blink = false), 400);
 	}
 
 	onMount(() => {
@@ -29,21 +29,27 @@
 	});
 </script>
 
-<AutoComplete
-	inputId="country-picker"
-	labelFieldName="name"
-	valueFieldName="number"
-	placeholder={guessedOnce ? 'Nope, guess again...' : 'Guess a country...'}
-	hideArrow
-	noResultsText=""
-	maxItemsToShowInList={5}
-	searchFunction={search}
-	bind:selectedItem={guessedCountry}
-/>
+<div class:blink>
+	<AutoComplete
+		inputId="country-picker"
+		labelFieldName="name"
+		valueFieldName="number"
+		placeholder={guessedOnce ? 'Nope, guess again...' : 'Guess a country...'}
+		hideArrow
+		noResultsText=""
+		maxItemsToShowInList={5}
+		searchFunction={() => countryList}
+		bind:selectedItem={guessedCountry}
+	/>
+</div>
 
 <style type="text/scss">
 	:global(.autocomplete) {
 		font-size: 0.8em;
+	}
+
+	:global(.autocomplete-list-item) {
+		color: rgb(var(--color-foreground)) !important;
 	}
 
 	:global(.autocomplete-list-item b) {
@@ -51,11 +57,11 @@
 	}
 
 	:global(.autocomplete-list-item.selected) {
-		background-color: #ccc !important;
-		color: black !important;
+		background-color: rgba(var(--color-accent), 0.5) !important;
 	}
 
 	:global(.autocomplete-list) {
+		background: rgb(var(--color-background)) !important;
 		padding: 0 !important;
 	}
 
@@ -64,6 +70,33 @@
 	}
 
 	:global(.autocomplete-input) {
-		border: 1px solid #ccc;
+		border: 1px solid transparent;
+		background-color: rgba(white, 0.5);
+
+		&:focus {
+			outline: none;
+			border: 1px solid rgba(white, 0.75);
+		}
+
+		&::placeholder {
+			color: rgb(var(--background-color));
+			opacity: 0.75;
+		}
+	}
+
+	.blink {
+		animation: blink 0.4s ease-in-out;
+	}
+
+	@keyframes blink {
+		0% {
+			opacity: 1;
+		}
+		50% {
+			opacity: 0.25;
+		}
+		100% {
+			opacity: 1;
+		}
 	}
 </style>

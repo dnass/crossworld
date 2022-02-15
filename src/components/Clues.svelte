@@ -4,8 +4,8 @@
 </script>
 
 <ol>
-	{#each $clues as clue}
-		<Clue {...clue} />
+	{#each $clues as { countryID, number, clue }}
+		<Clue {countryID} {number} {clue} />
 	{/each}
 </ol>
 

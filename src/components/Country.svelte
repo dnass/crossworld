@@ -1,11 +1,9 @@
 <script>
 	import { tweened } from 'svelte/motion';
 	import { quadOut as easing } from 'svelte/easing';
-	import { fade } from 'svelte/transition';
-	// import { interpolate } from 'flubber';
 	import { hoveredClue, pickedClue, guessed } from '../store';
 
-	export let id, name, number, d, x, y;
+	export let id, number, d, x, y;
 
 	const size = 25;
 
@@ -43,24 +41,12 @@
 	<path d={$path} />
 	{#if !correct}
 		<text
-			transition:fade
 			transform="translate({x}, {y})"
 			style:font-size="{size * 0.8}px"
 			x={size / 2}
 			y={size * 0.8}
 		>
 			{number + 1}
-		</text>
-	{:else}
-		<text
-			transition:fade
-			transform="translate({x}, {y})"
-			style:font-size="{size * 0.6}px"
-			class="label"
-			x={size / 2}
-			y={size * 0.6}
-		>
-			{name}
 		</text>
 	{/if}
 </g>
@@ -72,36 +58,32 @@
 
 	text {
 		text-anchor: middle;
-
-		&.label {
-			font-weight: 700;
-			fill: white;
-			stroke: tomato;
-			stroke-width: 4;
-			paint-order: stroke;
-			stroke-linejoin: round;
-			stroke-linecap: round;
-		}
+		fill: #fefefe;
 	}
 
 	path {
 		fill: transparent;
-		stroke: tomato;
+		stroke: rgba(var(--color-accent), 0.9);
 		stroke-width: 2;
 		stroke-linecap: square;
 		transition: fill 0.25s;
 
-		.hovered & {
-			fill: rgba(tomato, 0.2);
+		.hovered &,
+		.correct & {
+			fill: rgba(var(--color-accent), 0.5);
 		}
 
 		.picked &,
 		.correct & {
-			fill: rgba(tomato, 0.7);
+			fill: rgba(var(--color-accent), 0.7);
+		}
+
+		.correct.hovered & {
+			fill: rgba(var(--color-accent), 0.8);
 		}
 
 		.picked.correct & {
-			fill: rgba(tomato, 0.9);
+			fill: rgba(var(--color-accent), 0.9);
 		}
 	}
 </style>

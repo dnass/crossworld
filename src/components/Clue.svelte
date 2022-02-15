@@ -1,12 +1,11 @@
 <script>
 	import CountrySearch from './CountrySearch.svelte';
-	import { smartquotes } from '../utils';
 	import { hoveredClue, pickedClue, guessed } from '../store';
 
-	export let id, number, clue;
+	export let countryID, number, clue;
 
 	$: picked = $pickedClue === number;
-	$: correct = $guessed.includes(id);
+	$: correct = $guessed.includes(countryID);
 </script>
 
 <li
@@ -18,7 +17,7 @@
 	class:picked
 >
 	<div>
-		<p>{@html smartquotes(clue)}</p>
+		<p>{@html clue}</p>
 		{#if picked && !correct}
 			<CountrySearch />
 		{/if}
@@ -31,10 +30,10 @@
 	}
 
 	li {
+		display: flex;
 		transition: 0.25s background, 0.25s opacity;
 		list-style: none;
-		padding: 6px 8px;
-		display: flex;
+		padding: 8px 8px 8px 12px;
 		gap: 4px;
 		cursor: pointer;
 
@@ -50,11 +49,11 @@
 		}
 
 		&.hovered {
-			background: rgba(tomato, 0.2);
+			background: rgba(var(--color-accent), 0.2);
 		}
 
 		&.picked {
-			background: rgba(tomato, 0.7);
+			background: rgba(var(--color-accent), 0.7);
 		}
 
 		&.correct {
@@ -67,6 +66,16 @@
 
 		&:not(:last-child) {
 			margin-bottom: 0.5em;
+		}
+	}
+
+	@media (max-width: 767px) {
+		li {
+			background-color: rgb(var(--color-accent), 0.7) !important;
+			&:not(.picked) {
+				position: absolute;
+				left: -9999px;
+			}
 		}
 	}
 </style>

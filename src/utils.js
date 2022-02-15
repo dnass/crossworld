@@ -1,3 +1,6 @@
+import { browser } from '$app/env';
+import { writable } from 'svelte/store';
+
 export const smartquotes = (str) =>
 	str
 		.replace(/(^|[-\u2014\s(\["])'/g, '$1\u2018')
@@ -5,3 +8,15 @@ export const smartquotes = (str) =>
 		.replace(/(^|[-\u2014/\[(\u2018\s])"/g, '$1\u201c')
 		.replace(/"/g, '\u201d')
 		.replace(/--/g, '\u2014');
+
+export const localStore = (key, initialValue) => {
+	const localValue = browser ? JSON.parse(localStorage.getItem(key)) : null;
+	const store = writable(localValue || initialValue);
+
+	store.subscribe((value) => {
+		if (!browser) return;
+		localStorage.setItem(key, JSON.stringify(value));
+	});
+
+	return store;
+};

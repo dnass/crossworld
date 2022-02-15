@@ -1,55 +1,29 @@
 <script>
-	import { geoTransverseMercator, geoNaturalEarth1, geoPath } from 'd3-geo';
 	import Country from './Country.svelte';
-	import Win from './Win.svelte';
-	import { clues, rotation, projection, win, showNorth } from '../store';
-
-	const projections = {
-		geoTransverseMercator,
-		geoNaturalEarth1
-	};
-
-	const pad = 20;
-
-	let width = 640;
-
-	$: geography = {
-		type: 'FeatureCollection',
-		features: $clues.map(({ feature }) => feature)
-	};
-
-	$: proj = projections[$projection]()
-		.angle($showNorth ? 0 : $rotation)
-		.fitExtent(
-			[
-				[pad, pad],
-				[width - pad, width - pad]
-			],
-			geography
-		);
-
-	$: path = geoPath(proj);
+	import Label from './Label.svelte';
+	import { clues, mapSize } from '../store';
 </script>
 
-<div bind:clientWidth={width}>
-	<svg {width} height={width}>
-		{#each $clues as { feature, id, name, number }}
-			{@const [x, y] = path.centroid(feature)}
-			<Country {id} {name} {number} d={path(feature)} {x} {y} />
+<div bind:clientWidth={$mapSize}>
+	<svg>
+		{#each $clues as { countryID, name, number, d, centroid: [x, y] }}
+			<Country id={countryID} {name} {number} {d} {x} {y} />
+		{/each}
+		{#each $clues as { name, countryID, centroid: [x, y] }}
+			<Label {name} id={countryID} {x} {y} />
 		{/each}
 	</svg>
-
-	{#if $win}
-		<Win />
-	{/if}
 </div>
 
-<style>
+<style type="text/scss">
 	div {
 		width: 100%;
 	}
 
 	svg {
-		border: 4px solid #ccc;
+		border: 1px solid rgba(white, 0.22);
+		background: #222;
+		width: 100%;
+		aspect-ratio: 1;
 	}
 </style>
