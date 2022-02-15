@@ -4,23 +4,23 @@
 		hoveredClue,
 		pickedClue,
 		guessedCountry,
-		currentGuess,
+		formattedGuess,
 		guessed,
 		win,
-		tryAgain,
+		guessCount,
 		enterGuess
 	} from '../store';
 
 	export let countryID, number, clue;
 
+	let blink = false;
+
 	$: picked = $pickedClue === number;
 	$: correct = $guessed.includes(countryID);
-	$: displayName = $guessedCountry
-		? $guessedCountry.name.replace(
-				new RegExp($currentGuess, 'gi'),
-				(match) => `<strong>${match}</strong>`
-		  )
-		: null;
+	$: if ($guessCount) {
+		blink = true;
+		setTimeout(() => (blink = false), 400);
+	}
 </script>
 
 <li
@@ -30,14 +30,15 @@
 	class:correct
 	class:hovered={$hoveredClue === number}
 	class:picked
+	class:blink
 >
 	<div>
 		<p>{@html clue}</p>
 		{#if picked && !correct}
-			{#if displayName}
+			{#if $formattedGuess}
 				{#key $guessedCountry}
 					<p class="guess">
-						<span>{@html displayName}</span>
+						<span>{@html $formattedGuess}</span>
 						<button on:click|stopPropagation={enterGuess}>
 							<img alt="" src="/arrow_circle_right_black_24dp.svg" />
 						</button>
@@ -45,7 +46,7 @@
 				{/key}
 			{:else if !$win}
 				<p class="note">
-					{#if $tryAgain}
+					{#if $guessCount}
 						Try again...
 					{:else}
 						Start typing a country...
@@ -110,6 +111,10 @@
 		&.correct {
 			opacity: 0.5;
 		}
+
+		&.blink {
+			animation: blink 0.4s ease-in-out;
+		}
 	}
 
 	p {
@@ -149,6 +154,18 @@
 				position: absolute;
 				left: -9999px;
 			}
+		}
+	}
+
+	@keyframes blink {
+		0% {
+			opacity: 1;
+		}
+		50% {
+			opacity: 0.5;
+		}
+		100% {
+			opacity: 1;
 		}
 	}
 </style>

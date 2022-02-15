@@ -18,6 +18,10 @@
 <style type="text/scss">
 	div {
 		width: 100%;
+
+		@media (max-width: 767px) {
+			margin-bottom: 0.5em;
+		}
 	}
 
 	svg {

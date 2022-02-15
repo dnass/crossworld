@@ -1,0 +1,47 @@
+<script>
+	import Keyboard from 'svelte-keyboard';
+	import { width, currentGuess, enterGuess } from '../store';
+
+	const onKeydown = ({ detail }) => {
+		if (detail === 'Enter') {
+			enterGuess();
+		} else if (detail === 'Backspace') {
+			$currentGuess = $currentGuess.slice(0, -1);
+		} else if ($currentGuess) {
+			$currentGuess = `${$currentGuess}${detail}`;
+		} else {
+			$currentGuess = detail;
+		}
+	};
+</script>
+
+{#if $width < 768}
+	<div>
+		<Keyboard
+			--background="rgba(var(--color-accent), 0.4)"
+			--active-background="rgba(var(--color-accent), 0.7)"
+			--color="currentColor"
+			--font-family="'Montserrat', sans-serif'"
+			--font-size="1em"
+			--height="3em"
+			--min-width="1.5em"
+			--border-radius="0"
+			on:keydown={onKeydown}
+			layout="wordle"
+		/>
+	</div>
+{/if}
+
+<style type="text/scss">
+	div {
+		display: flex;
+		flex-direction: column;
+		flex: 1;
+		justify-content: flex-end;
+		margin: 0.5em 0 0.25em;
+
+		:global(button) {
+			padding: 0;
+		}
+	}
+</style>

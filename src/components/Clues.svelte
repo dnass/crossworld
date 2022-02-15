@@ -29,8 +29,9 @@
 
 	button {
 		background-color: rgba(var(--color-accent), 0.2);
-		border: transparent;
+		border: none;
 		padding: 2px;
+		margin: 0;
 		cursor: pointer;
 
 		&:hover {

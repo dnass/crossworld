@@ -6,9 +6,12 @@
 	import Modal from '../components/Modal.svelte';
 	import Settings from '../components/modals/Settings.svelte';
 	import CountrySearch from '../components/CountrySearch.svelte';
+	import Keyboard from '../components/Keyboard.svelte';
 	import Help from '../components/modals/Help.svelte';
 	import Win from '../components/modals/Win.svelte';
-	import { settingsVisible, helpVisible, darkMode, win, winVisible } from '../store';
+	import { settingsVisible, helpVisible, darkMode, win, winVisible, width } from '../store';
+
+	let height;
 
 	$: themeStyle = `<style> :root { --color-foreground: ${
 		$darkMode ? '250, 250, 250' : '5, 5, 5'
@@ -32,12 +35,15 @@
 	{@html themeStyle}
 </svelte:head>
 
-<div class="body" class:dark={$darkMode}>
+<svelte:window bind:innerWidth={$width} bind:innerHeight={height} />
+
+<div class="body" class:dark={$darkMode} style:height={height ? `${height}px` : null}>
 	<nav>
 		<Title />
 		<Controls />
 	</nav>
 	<div class="game">
+		<Keyboard />
 		<Clues />
 		<Map />
 	</div>
@@ -57,13 +63,17 @@
 		</Modal>
 	{/if}
 </div>
+
 <CountrySearch />
 
 <style type="text/scss">
 	.body {
+		display: flex;
+		flex-direction: column;
 		max-width: 960px;
-		max-height: 100vh;
-		margin: 0 auto 0;
+		height: 100vh;
+		margin: 0 auto;
+		padding: 1em;
 
 		@media (min-width: 768px) {
 			margin-top: 4em;
@@ -73,7 +83,8 @@
 	.game {
 		display: flex;
 		flex-direction: column-reverse;
-		gap: 0.5em;
+		flex-grow: 1;
+		justify-content: flex-end;
 
 		@media (min-width: 768px) {
 			gap: 1em;

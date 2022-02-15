@@ -2,7 +2,7 @@ import { geoPath } from 'd3-geo';
 import { tick } from 'svelte';
 import { writable, derived, get } from 'svelte/store';
 import { countries, projections } from '../geo';
-import { mapSize, pickedClue, currentGuess, tryAgain } from './state';
+import { mapSize, pickedClue, currentGuess, guessCount } from './state';
 import { hardMode, currentPuzzle } from './settings';
 import { smartquotes } from '../utils';
 import { puzzles, puzzleList } from '../puzzles';
@@ -99,15 +99,15 @@ const shareMessage = derived(
 );
 
 const guessedCountry = derived(currentGuess, ($currentGuess) => {
-	const cleanGuess = $currentGuess && $currentGuess.replace(/[^a-z ]/g, '');
+	const cleanGuess = $currentGuess && $currentGuess.toLowerCase().replace(/[^a-z ]/g, '');
 	if (!cleanGuess) return null;
 
-	const match = countryList.find(({ name }) =>
-		name.toLowerCase().includes(cleanGuess.toLowerCase())
-	);
+	const match = [...countryList]
+		.sort(() => 0.5 - Math.random())
+		.find(({ name }) => name.toLowerCase().includes(cleanGuess));
 
 	if (!match) {
-		tryAgain.set(true);
+		guessCount.update((v) => v + 1);
 		currentGuess.set('');
 		return null;
 	}
@@ -115,4 +115,13 @@ const guessedCountry = derived(currentGuess, ($currentGuess) => {
 	return match;
 });
 
-export { clues, guessedCountry, pickedCountry, guessed, win, shareMessage };
+const formattedGuess = derived([currentGuess, guessedCountry], ([$currentGuess, $guessedCountry]) =>
+	$guessedCountry
+		? $guessedCountry.name.replace(
+				new RegExp($currentGuess, 'gi'),
+				(match) => `<strong>${match}</strong>`
+		  )
+		: null
+);
+
+export { clues, guessedCountry, pickedCountry, formattedGuess, guessed, win, shareMessage };

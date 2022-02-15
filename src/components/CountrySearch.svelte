@@ -1,6 +1,6 @@
 <script>
 	import { onMount, tick } from 'svelte';
-	import { currentGuess, settingsVisible, helpVisible, win, winVisible } from '../store';
+	import { currentGuess, settingsVisible, helpVisible, win, winVisible, width } from '../store';
 
 	let input;
 
@@ -14,18 +14,21 @@
 
 		document.addEventListener('click', listener);
 
-		await tick();
+		while (!input) await tick();
 		input.focus();
 
 		return () => document.removeEventListener('click', listener);
 	});
 </script>
 
-<input bind:this={input} bind:value={$currentGuess} />
+{#if $width >= 768}
+	<input bind:this={input} bind:value={$currentGuess} />
+{/if}
 
 <style type="text/scss">
 	input {
 		position: absolute;
 		left: -9999px;
+		font-size: 16px;
 	}
 </style>

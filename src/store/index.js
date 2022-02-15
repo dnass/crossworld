@@ -8,10 +8,19 @@ import {
 	helpVisible,
 	winVisible,
 	currentGuess,
-	tryAgain
+	guessCount,
+	width
 } from './state';
 import { currentPuzzle, hardMode, darkMode } from './settings';
-import { clues, guessedCountry, pickedCountry, guessed, shareMessage, win } from './game';
+import {
+	clues,
+	guessedCountry,
+	pickedCountry,
+	formattedGuess,
+	guessed,
+	shareMessage,
+	win
+} from './game';
 
 export const getNextClue = (reverse = false) => {
 	const guesses = get(guessed),
@@ -46,7 +55,7 @@ export const getNextClue = (reverse = false) => {
 	}
 
 	pickedClue.set(index);
-	tryAgain.set(false);
+	guessCount.set(0);
 };
 
 export const enterGuess = () => {
@@ -56,11 +65,11 @@ export const enterGuess = () => {
 		const newGuesses = [...get(guessed)];
 		newGuesses[get(pickedClue)] = guess.id;
 		guessed.set(newGuesses);
-		tryAgain.set(false);
+		guessCount.set(0);
 		hoveredClue.set(null);
 		getNextClue();
-	} else {
-		tryAgain.set(true);
+	} else if (guess) {
+		guessCount.update((v) => v + 1);
 	}
 
 	currentGuess.set('');
@@ -91,9 +100,11 @@ export {
 	hoveredClue,
 	currentGuess,
 	guessedCountry,
+	formattedGuess,
+	width,
 	guessed,
 	win,
-	tryAgain,
+	guessCount,
 	shareMessage,
 	darkMode,
 	hardMode,

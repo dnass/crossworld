@@ -14,7 +14,9 @@ const mapSize = writable(640);
 
 const currentGuess = writable();
 
-const tryAgain = writable(false);
+const guessCount = writable(1);
+
+const width = writable(768);
 
 export {
 	mapSize,
@@ -24,5 +26,6 @@ export {
 	helpVisible,
 	winVisible,
 	currentGuess,
-	tryAgain
+	guessCount,
+	width
 };
