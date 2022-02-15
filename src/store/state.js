@@ -12,4 +12,17 @@ const hoveredClue = writable(null);
 
 const mapSize = writable(640);
 
-export { mapSize, pickedClue, hoveredClue, settingsVisible, helpVisible, winVisible };
+const currentGuess = writable();
+
+const tryAgain = writable(false);
+
+export {
+	mapSize,
+	pickedClue,
+	hoveredClue,
+	settingsVisible,
+	helpVisible,
+	winVisible,
+	currentGuess,
+	tryAgain
+};

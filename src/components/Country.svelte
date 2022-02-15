@@ -59,6 +59,7 @@
 	text {
 		text-anchor: middle;
 		fill: #fefefe;
+		font-weight: 700;
 	}
 
 	path {

@@ -6,12 +6,14 @@ import {
 	hoveredClue,
 	settingsVisible,
 	helpVisible,
-	winVisible
+	winVisible,
+	currentGuess,
+	tryAgain
 } from './state';
 import { currentPuzzle, hardMode, darkMode } from './settings';
-import { clues, pickedCountry, guessed, shareMessage, win } from './game';
+import { clues, guessedCountry, pickedCountry, guessed, shareMessage, win } from './game';
 
-const getNextClue = (reverse = false) => {
+export const getNextClue = (reverse = false) => {
 	const guesses = get(guessed),
 		picked = get(pickedClue);
 
@@ -43,22 +45,40 @@ const getNextClue = (reverse = false) => {
 		}
 	}
 
-	return index;
+	pickedClue.set(index);
+	tryAgain.set(false);
 };
 
-guessed.subscribe(() => {
-	if (get(guessed)[get(pickedClue)] !== get(pickedCountry)) return;
+export const enterGuess = () => {
+	const guess = get(guessedCountry);
 
-	pickedClue.set(getNextClue());
-	hoveredClue.set(null);
-});
+	if (guess && guess.id === get(pickedCountry)) {
+		const newGuesses = [...get(guessed)];
+		newGuesses[get(pickedClue)] = guess.id;
+		guessed.set(newGuesses);
+		tryAgain.set(false);
+
+		getNextClue();
+		hoveredClue.set(null);
+	} else {
+		tryAgain.set(true);
+	}
+
+	currentGuess.set('');
+};
 
 if (browser) {
 	document.addEventListener('keydown', (e) => {
 		if (e.key === 'ArrowRight') {
-			pickedClue.set(getNextClue());
-		} else if (e.key === 'ArrowLeft') {
-			pickedClue.set(getNextClue(true));
+			getNextClue();
+		}
+
+		if (e.key === 'ArrowLeft') {
+			getNextClue(true);
+		}
+
+		if (e.key === 'Enter') {
+			enterGuess();
 		}
 	});
 }
@@ -70,8 +90,11 @@ export {
 	pickedClue,
 	pickedCountry,
 	hoveredClue,
+	currentGuess,
+	guessedCountry,
 	guessed,
 	win,
+	tryAgain,
 	shareMessage,
 	darkMode,
 	hardMode,

@@ -2,10 +2,11 @@ import { geoPath } from 'd3-geo';
 import { tick } from 'svelte';
 import { writable, derived, get } from 'svelte/store';
 import { countries, projections } from '../geo';
-import { mapSize, pickedClue } from './state';
-import { hardMode, darkMode, currentPuzzle } from './settings';
+import { mapSize, pickedClue, currentGuess, tryAgain } from './state';
+import { hardMode, currentPuzzle } from './settings';
 import { smartquotes } from '../utils';
 import { puzzles, puzzleList } from '../puzzles';
+import { countryList } from '../geo';
 
 const rotation = derived([hardMode, currentPuzzle], ([$hardMode]) =>
 	$hardMode ? 30 + Math.random() * 300 : 0
@@ -97,6 +98,21 @@ const shareMessage = derived(
 	}
 );
 
-shareMessage.subscribe(console.log);
+const guessedCountry = derived(currentGuess, ($currentGuess) => {
+	const cleanGuess = $currentGuess && $currentGuess.replace(/[^a-z ]/g, '');
+	if (!cleanGuess) return null;
 
-export { clues, pickedCountry, guessed, win, shareMessage };
+	const match = countryList.find(({ name }) =>
+		name.toLowerCase().includes(cleanGuess.toLowerCase())
+	);
+
+	if (!match) {
+		tryAgain.set(true);
+		currentGuess.set('');
+		return null;
+	}
+
+	return match;
+});
+
+export { clues, guessedCountry, pickedCountry, guessed, win, shareMessage };

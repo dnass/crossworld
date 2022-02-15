@@ -2,18 +2,10 @@
 	import { settingsVisible, helpVisible } from '../store';
 	import { currentPuzzle } from '../store';
 	import { puzzleList } from '../puzzles';
-
-	let picker;
-
-	const showPicker = () => {
-		if (!picker) return;
-		picker.focus();
-		pick;
-	};
 </script>
 
 <div>
-	<select aria-label="Pick a puzzle" bind:value={$currentPuzzle} bind:this={picker}>
+	<select aria-label="Pick a puzzle" bind:value={$currentPuzzle} on:click|stopPropagation>
 		{#each puzzleList as date, i}
 			<option value={i}>{date}</option>
 		{/each}
@@ -38,6 +30,7 @@
 		appearance: none;
 		color: transparent;
 		border: transparent;
+		background-color: transparent;
 		background-image: url(/menu_book_black_24dp.svg);
 		background-repeat: no-repeat;
 		background-size: 2em;

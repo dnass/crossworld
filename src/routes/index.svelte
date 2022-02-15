@@ -5,6 +5,7 @@
 	import Controls from '../components/Controls.svelte';
 	import Modal from '../components/Modal.svelte';
 	import Settings from '../components/modals/Settings.svelte';
+	import CountrySearch from '../components/CountrySearch.svelte';
 	import Help from '../components/modals/Help.svelte';
 	import Win from '../components/modals/Win.svelte';
 	import { settingsVisible, helpVisible, darkMode, win, winVisible } from '../store';
@@ -24,10 +25,10 @@
 	<link rel="preconnect" href="https://fonts.googleapis.com" />
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 	<link
-		href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,500;0,700;0,900;1,500&display=swap"
+		href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,500;0,700;0,900;1,500&display=swap"
 		rel="stylesheet"
 	/>
-	<title>Crossworld: The geographic crossword puzzle</title>
+	<title>Crossworld: A geographic crossword puzzle</title>
 	{@html themeStyle}
 </svelte:head>
 
@@ -37,8 +38,8 @@
 		<Controls />
 	</nav>
 	<div class="game">
-		<Map />
 		<Clues />
+		<Map />
 	</div>
 	{#if $settingsVisible}
 		<Modal title="Settings" store={settingsVisible}>
@@ -56,6 +57,7 @@
 		</Modal>
 	{/if}
 </div>
+<CountrySearch />
 
 <style type="text/scss">
 	.body {
@@ -70,12 +72,12 @@
 
 	.game {
 		display: flex;
-		flex-direction: column;
+		flex-direction: column-reverse;
 		gap: 0.5em;
 
 		@media (min-width: 768px) {
 			gap: 1em;
-			flex-direction: row-reverse;
+			flex-direction: row;
 		}
 	}
 
@@ -104,6 +106,15 @@
 		:global(img),
 		:global(select) {
 			filter: invert(1);
+
+			&::selection {
+				filter: invert(1);
+			}
 		}
+	}
+
+	:global(::selection) {
+		background-color: rgb(var(--color-accent));
+		color: rgb(var(--color-background));
 	}
 </style>
