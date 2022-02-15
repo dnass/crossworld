@@ -5,13 +5,19 @@
 	let input;
 
 	onMount(async () => {
-		document.addEventListener('click', () => {
+		if (!input) return;
+
+		const listener = () => {
 			if ($settingsVisible || $helpVisible || ($win && $winVisible)) return;
-			input.focus();
-		});
+			if (input) input.focus();
+		};
+
+		document.addEventListener('click', listener);
 
 		await tick();
 		input.focus();
+
+		return () => document.removeEventListener('click', listener);
 	});
 </script>
 

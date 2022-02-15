@@ -57,9 +57,8 @@ export const enterGuess = () => {
 		newGuesses[get(pickedClue)] = guess.id;
 		guessed.set(newGuesses);
 		tryAgain.set(false);
-
-		getNextClue();
 		hoveredClue.set(null);
+		getNextClue();
 	} else {
 		tryAgain.set(true);
 	}

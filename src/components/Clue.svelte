@@ -38,7 +38,7 @@
 				{#key $guessedCountry}
 					<p class="guess">
 						<span>{@html displayName}</span>
-						<button on:click={enterGuess}>
+						<button on:click|stopPropagation={enterGuess}>
 							<img alt="" src="/arrow_circle_right_black_24dp.svg" />
 						</button>
 					</p>
