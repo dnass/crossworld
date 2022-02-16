@@ -8,16 +8,18 @@
 <div bind:clientWidth={$mapSize}>
 	<svg>
 		{#key $currentPuzzle}
-			<g out:fade={{ duration: 200 }} in:fade={{ duration: 200, delay: 200 }}>
-				{#each $clues as { countryID, name, number, d, centroid: [x, y] } (name)}
-					<Country id={countryID} {name} {number} {d} {x} {y} />
-				{/each}
-				{#each $clues as { name, number, centroid: [x, y] }}
-					{#if $solutions[number]}
-						<Label {name} {number} {x} {y} />
-					{/if}
-				{/each}
-			</g>
+			{#if $mapSize > 0}
+				<g out:fade={{ duration: 200 }} in:fade={{ duration: 200, delay: 200 }}>
+					{#each $clues as { countryID, name, number, d, centroid: [x, y] } (name)}
+						<Country id={countryID} {name} {number} {d} {x} {y} />
+					{/each}
+					{#each $clues as { name, number, centroid: [x, y] }}
+						{#if $solutions[number]}
+							<Label {name} {number} {x} {y} />
+						{/if}
+					{/each}
+				</g>
+			{/if}
 		{/key}
 	</svg>
 </div>

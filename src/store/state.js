@@ -15,7 +15,7 @@ const pickedClue = writable(0);
 
 const hoveredClue = writable(null);
 
-const mapSize = writable(640);
+const mapSize = writable(0);
 
 const currentGuess = writable();
 

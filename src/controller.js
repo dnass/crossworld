@@ -9,7 +9,6 @@ import {
 	pickedCountry,
 	hoveredClue,
 	currentGuess,
-	currentPuzzle,
 	solutions,
 	guessCounts,
 	win,
