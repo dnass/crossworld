@@ -1,10 +1,13 @@
 <script>
 	import Spinner from '../Spinner.svelte';
-	import { shareMessage } from '../../store';
+	import { shareMessage, currentPuzzleDate } from '../../store';
+	import { trackEvent } from '../../utils';
 
 	let copied = false;
 
 	const share = async () => {
+		trackEvent('share', $currentPuzzleDate);
+
 		if (typeof navigator.share === 'undefined') {
 			navigator.clipboard.writeText($shareMessage);
 			copied = true;

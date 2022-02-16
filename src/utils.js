@@ -22,3 +22,9 @@ export const localStore = (key, initialValue) => {
 };
 
 export const filledArray = (length, value) => new Array(length).fill(value);
+
+export const trackEvent = (name, event_label) => {
+	if (typeof gtag !== 'undefined') {
+		gtag('event', name, { event_label });
+	}
+};

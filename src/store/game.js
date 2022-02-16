@@ -6,6 +6,8 @@ import { hardMode, currentPuzzle } from './settings';
 import { smartquotes, filledArray } from '../utils';
 import { puzzles, puzzleList } from '../puzzles';
 
+const currentPuzzleDate = derived(currentPuzzle, ($currentPuzzle) => puzzleList[$currentPuzzle]);
+
 const rotation = derived([hardMode, currentPuzzle], ([$hardMode]) =>
 	$hardMode ? 30 + Math.random() * 300 : 0
 );
@@ -68,8 +70,8 @@ const win = derived(
 );
 
 const shareMessage = derived(
-	[mapSize, clues, currentPuzzle, guessCounts],
-	([$mapSize, $clues, $currentPuzzle, $guessCounts]) => {
+	[mapSize, clues, currentPuzzleDate, guessCounts],
+	([$mapSize, $clues, $currentPuzzleDate, $guessCounts]) => {
 		const gridSize = 7;
 
 		const numbers = ['0️⃣', '1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣', '6️⃣', '7️⃣', '8️⃣', '9️⃣', '🔟'];
@@ -90,7 +92,7 @@ const shareMessage = derived(
 			grid += '\n';
 		}
 
-		return `Crossworld – ${puzzleList[$currentPuzzle]}\n\n${grid}\nhttps://crossworld.world`;
+		return `Crossworld – ${$currentPuzzleDate}\n\n${grid}\nhttps://crossworld.world`;
 	}
 );
 
@@ -131,5 +133,6 @@ export {
 	guessCounts,
 	win,
 	shareMessage,
-	ready
+	ready,
+	currentPuzzleDate
 };

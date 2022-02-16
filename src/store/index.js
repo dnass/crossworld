@@ -19,7 +19,8 @@ import {
 	guessCounts,
 	solutions,
 	shareMessage,
-	win
+	win,
+	currentPuzzleDate
 } from './game';
 import { currentPuzzle, hardMode, darkMode } from './settings';
 
@@ -45,5 +46,6 @@ export {
 	helpVisible,
 	winVisible,
 	modalVisible,
-	input
+	input,
+	currentPuzzleDate
 };

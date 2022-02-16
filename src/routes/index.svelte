@@ -1,4 +1,5 @@
 <script>
+	import Analytics from '../components/Analytics.svelte';
 	import Clues from '../components/Clues.svelte';
 	import Map from '../components/Map.svelte';
 	import Title from '../components/Title.svelte';
@@ -36,6 +37,8 @@
 </svelte:head>
 
 <svelte:window bind:innerWidth={$width} bind:innerHeight={height} />
+
+<Analytics />
 
 <CountrySearch />
 
