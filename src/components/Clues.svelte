@@ -9,11 +9,15 @@
 	<button aria-label="Previous clue" on:click={() => getNextClue(true)}>
 		<img src="/arrow_left_black_24dp.svg" alt="" />
 	</button>
-	<ol out:fade={{ duration: 200 }} in:fade={{ duration: 200, delay: 200 }}>
-		{#each $clues as { number, clue } (clue)}
-			<Clue {number} {clue} />
-		{/each}
-	</ol>
+	{#key $currentPuzzle}
+		<div out:fade={{ duration: 200 }} in:fade={{ duration: 200, delay: 200 }}>
+			<ol>
+				{#each $clues as { number, clue }}
+					<Clue {number} {clue} />
+				{/each}
+			</ol>
+		</div>
+	{/key}
 	<button aria-label="Next clue" on:click={() => getNextClue()}>
 		<img src="/arrow_right_black_24dp.svg" alt="" />
 	</button>

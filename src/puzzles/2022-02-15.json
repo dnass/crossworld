@@ -1,0 +1,26 @@
+{
+	"date": "2022-02-15",
+	"projection": "geoNaturalEarth1",
+	"clues": [
+		{
+			"id": "096",
+			"clue": "\"The Abode of Peace\""
+		},
+		{
+			"id": "458",
+			"clue": "Half of it is peninsular"
+		},
+		{
+			"id": "360",
+			"clue": "Languages spoken here include Sasak, Betawi, and over 700 others"
+		},
+		{
+			"id": "702",
+			"clue": "Its land area has increased by 22% since 1965"
+		},
+		{
+			"id": "626",
+			"clue": "The fourth-newest country"
+		}
+	]
+}

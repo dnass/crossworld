@@ -29,7 +29,7 @@
 		duration: 0
 	});
 
-	$: path.set(initialPath);
+	$: !correct && path.set(initialPath);
 
 	$: picked = number === $pickedClue;
 	$: hovered = number === $hoveredClue;

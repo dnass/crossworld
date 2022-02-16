@@ -21,7 +21,7 @@ const clues = derived(
 	([$clueList, $projection, $mapSize, $rotation]) => {
 		const features = $clueList.map(({ id }) => countries.get(id));
 
-		const pad = 20;
+		const pad = $mapSize * 0.025;
 
 		const projection = projections[$projection]()
 			.angle($rotation)
@@ -54,10 +54,8 @@ const clues = derived(
 );
 
 const solutions = writable(filledArray(get(clues).length, false));
-// solutions.subscribe(console.log);
 
 const guessCounts = writable(filledArray(get(clues).length, 0));
-// guessCounts.subscribe(console.log);
 
 const pickedCountry = derived(
 	[clues, pickedClue],
@@ -96,6 +94,8 @@ const shareMessage = derived(
 	}
 );
 
+const previousGuess = writable();
+
 const guessedCountry = derived(currentGuess, ($currentGuess) => {
 	const cleanGuess = $currentGuess && $currentGuess.toLowerCase().replace(/[^a-z ]/g, '');
 	if (!cleanGuess) return null;
@@ -104,9 +104,12 @@ const guessedCountry = derived(currentGuess, ($currentGuess) => {
 		.sort(() => 0.5 - Math.random())
 		.find(({ name }) => name.toLowerCase().includes(cleanGuess));
 
-	if (!match) currentGuess.set('');
-
-	return match;
+	if (match) {
+		previousGuess.set(match);
+		return match;
+	} else {
+		return get(previousGuess);
+	}
 });
 
 const formattedGuess = derived([currentGuess, guessedCountry], ([$currentGuess, $guessedCountry]) =>
@@ -126,6 +129,7 @@ const ready = derived(
 export {
 	clueList,
 	clues,
+	previousGuess,
 	guessedCountry,
 	pickedCountry,
 	formattedGuess,

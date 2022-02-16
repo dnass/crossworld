@@ -4,6 +4,7 @@ import { filledArray } from './utils';
 import {
 	clueList,
 	pickedClue,
+	previousGuess,
 	guessedCountry,
 	pickedCountry,
 	hoveredClue,
@@ -85,6 +86,7 @@ clueList.subscribe(($clueList) => {
 	pickedClue.set(0);
 	hoveredClue.set(null);
 	currentGuess.set('');
+	previousGuess.set();
 });
 
 win.subscribe(($win) => $win && winVisible.set(true));

@@ -1,11 +1,18 @@
 <script>
 	import { fade } from 'svelte/transition';
-	export let name, x, y;
+	import { hoveredClue, pickedClue } from '../store';
+
+	export let name, number, x, y;
 
 	const size = 25;
 </script>
 
 <text
+	on:mouseover={() => ($hoveredClue = number)}
+	on:mouseout={() => ($hoveredClue = null)}
+	on:focus={() => ($hoveredClue = number)}
+	on:blur={() => ($hoveredClue = null)}
+	on:click={() => ($pickedClue = number)}
 	transition:fade={{ duration: 100 }}
 	transform="translate({x}, {y})"
 	style:font-size="{size * 0.6}px"
@@ -25,6 +32,10 @@
 		paint-order: stroke;
 		stroke-linejoin: round;
 		stroke-linecap: round;
-		pointer-events: none;
+		cursor: pointer;
+
+		&:focus {
+			outline: none;
+		}
 	}
 </style>
