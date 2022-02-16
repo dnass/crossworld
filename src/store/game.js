@@ -68,15 +68,22 @@ const win = derived(
 );
 
 const shareMessage = derived(
-	[mapSize, clues, currentPuzzleDate, guessCounts],
-	([$mapSize, $clues, $currentPuzzleDate, $guessCounts]) => {
+	[clues, currentPuzzleDate, guessCounts],
+	([$clues, $currentPuzzleDate, $guessCounts]) => {
 		const gridSize = 7;
 
 		const numbers = ['0️⃣', '1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣', '6️⃣', '7️⃣', '8️⃣', '9️⃣', '🔟'];
 
+		const allCoords = [
+			...$clues.map((clue) => clue.centroid[0]),
+			...$clues.map((clue) => clue.centroid[1])
+		];
+		const min = Math.min(...allCoords);
+		const max = Math.max(...allCoords);
+
 		const positions = $clues.map((clue, number) => ({
 			number,
-			coords: clue.centroid.map((coord) => Math.round((coord / $mapSize) * gridSize))
+			coords: clue.centroid.map((coord) => Math.round(((coord - min) / max) * gridSize))
 		}));
 
 		let grid = '';
