@@ -21,6 +21,8 @@
 	}; --color-accent: 123, 104, 238; }</style>`;
 </script>
 
+<Analytics />
+
 <svelte:head>
 	<link
 		rel="icon"
@@ -33,12 +35,11 @@
 		rel="stylesheet"
 	/>
 	<title>Crossworld: A geographic crossword puzzle</title>
+
 	{@html themeStyle}
 </svelte:head>
 
 <svelte:window bind:innerWidth={$width} bind:innerHeight={height} />
-
-<Analytics />
 
 <CountrySearch />
 
