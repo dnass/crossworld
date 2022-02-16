@@ -1,31 +1,36 @@
 <script>
-	import { fade } from 'svelte/transition';
+	import { fade, slide } from 'svelte/transition';
 	import {
 		hoveredClue,
 		pickedClue,
 		guessedCountry,
 		formattedGuess,
-		guessed,
+		solutions,
 		win,
-		guessCount,
-		enterGuess
+		guessCounts
 	} from '../store';
+	import { enterGuess } from '../controller';
 
-	export let countryID, number, clue;
+	export let number, clue;
 
 	let blink = false;
 
 	$: picked = $pickedClue === number;
-	$: correct = $guessed.includes(countryID);
-	$: if ($guessCount) {
+	$: correct = $solutions[number];
+	$: guessCount = $guessCounts[number];
+	$: if (guessCount > 0 && picked && !correct) {
 		blink = true;
 		setTimeout(() => (blink = false), 400);
 	}
 </script>
 
 <li
+	out:fade={{ duration: 200 }}
+	in:fade={{ duration: 200, delay: 200 }}
 	on:mouseover={() => ($hoveredClue = number)}
+	on:focus={() => ($hoveredClue = number)}
 	on:mouseout={() => ($hoveredClue = null)}
+	on:blur={() => ($hoveredClue = null)}
 	on:click={picked ? enterGuess : () => ($pickedClue = number)}
 	class:correct
 	class:hovered={$hoveredClue === number}
@@ -36,17 +41,19 @@
 		<p>{@html clue}</p>
 		{#if picked && !correct}
 			{#if $formattedGuess}
-				{#key $guessedCountry}
-					<p class="guess">
-						<span>{@html $formattedGuess}</span>
-						<button on:click|stopPropagation={enterGuess}>
-							<img alt="" src="/arrow_circle_right_black_24dp.svg" />
-						</button>
-					</p>
+				{#key $guessedCountry.name}
+					<div transition:slide={{ duration: 100 }}>
+						<p class="guess">
+							<span>{@html $formattedGuess}</span>
+							<button on:click|stopPropagation={enterGuess}>
+								<img alt="" src="/arrow_circle_right_black_24dp.svg" />
+							</button>
+						</p>
+					</div>
 				{/key}
 			{:else if !$win}
 				<p class="note">
-					{#if $guessCount}
+					{#if guessCount > 0}
 						Try again...
 					{:else}
 						Start typing a country...

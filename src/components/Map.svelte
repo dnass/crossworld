@@ -1,17 +1,24 @@
 <script>
+	import { fade } from 'svelte/transition';
 	import Country from './Country.svelte';
 	import Label from './Label.svelte';
-	import { clues, mapSize } from '../store';
+	import { currentPuzzle, clues, mapSize, solutions } from '../store';
 </script>
 
 <div bind:clientWidth={$mapSize}>
 	<svg>
-		{#each $clues as { countryID, name, number, d, centroid: [x, y] }}
-			<Country id={countryID} {name} {number} {d} {x} {y} />
-		{/each}
-		{#each $clues as { name, countryID, centroid: [x, y] }}
-			<Label {name} id={countryID} {x} {y} />
-		{/each}
+		{#key $currentPuzzle}
+			<g out:fade={{ duration: 200 }} in:fade={{ duration: 200, delay: 200 }}>
+				{#each $clues as { countryID, name, number, d, centroid: [x, y] } (name)}
+					<Country id={countryID} {name} {number} {d} {x} {y} />
+				{/each}
+				{#each $clues as { name, number, centroid: [x, y] }}
+					{#if $solutions[number]}
+						<Label {name} {number} {x} {y} />
+					{/if}
+				{/each}
+			</g>
+		{/key}
 	</svg>
 </div>
 
@@ -25,9 +32,8 @@
 	}
 
 	svg {
-		border: 1px solid rgba(white, 0.22);
-		background: #222;
 		width: 100%;
+		background: #222;
 		aspect-ratio: 1;
 	}
 </style>

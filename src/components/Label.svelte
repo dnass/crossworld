@@ -1,23 +1,19 @@
 <script>
 	import { fade } from 'svelte/transition';
-	import { guessed } from '../store';
-	export let name, id, x, y;
+	export let name, x, y;
 
 	const size = 25;
-	$: correct = $guessed.includes(id);
 </script>
 
-{#if correct}
-	<text
-		transition:fade
-		transform="translate({x}, {y})"
-		style:font-size="{size * 0.6}px"
-		x={size / 4}
-		y={size * 0.3}
-	>
-		{name}
-	</text>
-{/if}
+<text
+	transition:fade={{ duration: 100 }}
+	transform="translate({x}, {y})"
+	style:font-size="{size * 0.6}px"
+	x={size / 4}
+	y={size * 0.3}
+>
+	{name}
+</text>
 
 <style type="text/scss">
 	text {

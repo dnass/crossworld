@@ -37,6 +37,8 @@
 
 <svelte:window bind:innerWidth={$width} bind:innerHeight={height} />
 
+<CountrySearch />
+
 <div class="body" class:dark={$darkMode} style:height={height ? `${height}px` : null}>
 	<nav>
 		<Title />
@@ -58,13 +60,11 @@
 		</Modal>
 	{/if}
 	{#if $win && $winVisible}
-		<Modal delay={500} store={winVisible}>
+		<Modal delay={800} store={winVisible}>
 			<Win slot="content" />
 		</Modal>
 	{/if}
 </div>
-
-<CountrySearch />
 
 <style type="text/scss">
 	.body {
@@ -74,10 +74,6 @@
 		height: 100vh;
 		margin: 0 auto;
 		padding: 1em;
-
-		@media (min-width: 768px) {
-			margin-top: 4em;
-		}
 	}
 
 	.game {
@@ -97,7 +93,9 @@
 		align-items: center;
 		justify-content: space-between;
 		margin-bottom: 0.75em;
+
 		@media (min-width: 768px) {
+			margin-top: 4em;
 			margin-bottom: 1em;
 		}
 	}
@@ -117,10 +115,6 @@
 		:global(img),
 		:global(select) {
 			filter: invert(1);
-
-			&::selection {
-				filter: invert(1);
-			}
 		}
 	}
 

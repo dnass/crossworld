@@ -1,4 +1,5 @@
 <script>
+	import Spinner from '../Spinner.svelte';
 	import { shareMessage } from '../../store';
 
 	let copied = false;
@@ -14,7 +15,7 @@
 </script>
 
 <div>
-	<h2>You won!</h2>
+	<h2><Spinner spin /> You won!</h2>
 	<button on:click={share}>
 		{#if copied}
 			Copied to clipboard

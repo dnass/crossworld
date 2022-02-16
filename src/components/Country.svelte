@@ -1,9 +1,10 @@
 <script>
+	import { browser } from '$app/env';
 	import { tweened } from 'svelte/motion';
 	import { quadOut as easing } from 'svelte/easing';
-	import { hoveredClue, pickedClue, guessed } from '../store';
+	import { hoveredClue, pickedClue, solutions } from '../store';
 
-	export let id, number, d, x, y;
+	export let number, d, x, y;
 
 	const size = 25;
 
@@ -17,6 +18,12 @@
 		.map((coords) => coords.join(','))
 		.join(' ')}`;
 
+	let interpolate;
+
+	if (browser) {
+		import('flubber').then(({ interpolate: i }) => (interpolate = i));
+	}
+
 	const path = tweened(initialPath, {
 		easing,
 		duration: 0
@@ -26,8 +33,8 @@
 
 	$: picked = number === $pickedClue;
 	$: hovered = number === $hoveredClue;
-	$: correct = $guessed.includes(id);
-	$: correct && path.set(d);
+	$: correct = $solutions[number];
+	$: correct && path.set(d, { duration: interpolate ? 750 : 0, interpolate });
 </script>
 
 <g
@@ -36,6 +43,8 @@
 	class:correct
 	on:mouseover={() => ($hoveredClue = number)}
 	on:mouseout={() => ($hoveredClue = null)}
+	on:focus={() => ($hoveredClue = number)}
+	on:blur={() => ($hoveredClue = null)}
 	on:click={() => ($pickedClue = number)}
 >
 	<path d={$path} />
@@ -54,6 +63,10 @@
 <style type="text/scss">
 	g {
 		cursor: pointer;
+
+		&:focus {
+			outline: none;
+		}
 	}
 
 	text {
@@ -69,7 +82,10 @@
 		stroke-linecap: square;
 		transition: fill 0.25s;
 
-		.hovered &,
+		.hovered & {
+			fill: rgba(var(--color-accent), 0.2);
+		}
+
 		.correct & {
 			fill: rgba(var(--color-accent), 0.5);
 		}

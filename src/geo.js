@@ -3,6 +3,11 @@ import { feature } from 'topojson-client';
 import map from 'world-atlas/countries-50m.json';
 
 const { features } = feature(map, map.objects.countries);
+features.forEach((feature) => {
+	if (feature.geometry.type === 'MultiPolygon') {
+		feature.geometry.coordinates.sort(([a], [b]) => b.length - a.length);
+	}
+});
 
 export const countries = new Map(features.map((d) => [d.id, d]));
 

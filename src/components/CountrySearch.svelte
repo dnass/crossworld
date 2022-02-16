@@ -1,28 +1,17 @@
 <script>
-	import { onMount, tick } from 'svelte';
-	import { currentGuess, settingsVisible, helpVisible, win, winVisible, width } from '../store';
+	import { onMount } from 'svelte';
+	import { currentGuess, width, input } from '../store';
+	import { focusSearch } from '../controller';
 
-	let input;
-
-	onMount(async () => {
-		if (!input) return;
-
-		const listener = () => {
-			if ($settingsVisible || $helpVisible || ($win && $winVisible)) return;
-			if (input) input.focus();
-		};
-
-		document.addEventListener('click', listener);
-
-		while (!input) await tick();
-		input.focus();
-
-		return () => document.removeEventListener('click', listener);
+	onMount(() => {
+		focusSearch();
+		document.addEventListener('click', focusSearch);
+		return () => document.removeEventListener('click', focusSearch);
 	});
 </script>
 
 {#if $width >= 768}
-	<input bind:this={input} bind:value={$currentGuess} />
+	<input bind:this={$input} bind:value={$currentGuess} />
 {/if}
 
 <style type="text/scss">

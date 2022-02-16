@@ -1,10 +1,15 @@
-import { writable } from 'svelte/store';
+import { writable, derived } from 'svelte/store';
 
 const settingsVisible = writable(false);
 
 const helpVisible = writable(false);
 
-const winVisible = writable(true);
+const winVisible = writable(false);
+
+const modalVisible = derived(
+	[settingsVisible, helpVisible, winVisible],
+	([$settings, $help, $win]) => $settings || $help || $win
+);
 
 const pickedClue = writable(0);
 
@@ -14,9 +19,9 @@ const mapSize = writable(640);
 
 const currentGuess = writable();
 
-const guessCount = writable(1);
-
 const width = writable(768);
+
+const input = writable();
 
 export {
 	mapSize,
@@ -25,7 +30,8 @@ export {
 	settingsVisible,
 	helpVisible,
 	winVisible,
+	modalVisible,
 	currentGuess,
-	guessCount,
-	width
+	width,
+	input
 };

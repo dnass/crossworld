@@ -1,5 +1,7 @@
 <script>
-	import { clues, getNextClue } from '../store';
+	import { fade } from 'svelte/transition';
+	import { clues, currentPuzzle } from '../store';
+	import { getNextClue } from '../controller';
 	import Clue from './Clue.svelte';
 </script>
 
@@ -7,12 +9,12 @@
 	<button aria-label="Previous clue" on:click={() => getNextClue(true)}>
 		<img src="/arrow_left_black_24dp.svg" alt="" />
 	</button>
-	<ol>
-		{#each $clues as { countryID, number, clue }}
-			<Clue {countryID} {number} {clue} />
+	<ol out:fade={{ duration: 200 }} in:fade={{ duration: 200, delay: 200 }}>
+		{#each $clues as { number, clue } (clue)}
+			<Clue {number} {clue} />
 		{/each}
 	</ol>
-	<button aria-label="NExt clue" on:click={() => getNextClue()}>
+	<button aria-label="Next clue" on:click={() => getNextClue()}>
 		<img src="/arrow_right_black_24dp.svg" alt="" />
 	</button>
 </div>

@@ -16,9 +16,9 @@
 </script>
 
 <div
+	class="modal"
 	in:fade={{ delay, duration: 100 }}
 	out:fade={{ duration: 100 }}
-	class="modal"
 	on:click={closeModal}
 >
 	<div class="panel" on:click|stopPropagation>
@@ -94,7 +94,7 @@
 	h2 {
 		margin: 0 0 1em;
 		text-align: center;
-		font-size: 1em;
+		font-size: 0.8em;
 		text-transform: uppercase;
 	}
 </style>

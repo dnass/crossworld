@@ -20,3 +20,5 @@ export const localStore = (key, initialValue) => {
 
 	return store;
 };
+
+export const filledArray = (length, value) => new Array(length).fill(value);

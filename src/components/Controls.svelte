@@ -2,10 +2,16 @@
 	import { settingsVisible, helpVisible } from '../store';
 	import { currentPuzzle } from '../store';
 	import { puzzleList } from '../puzzles';
+	import { focusSearch } from '../controller';
 </script>
 
 <div>
-	<select aria-label="Pick a puzzle" bind:value={$currentPuzzle} on:click|stopPropagation>
+	<select
+		aria-label="Pick a puzzle"
+		bind:value={$currentPuzzle}
+		on:click|stopPropagation
+		on:change={focusSearch}
+	>
 		{#each puzzleList as date, i}
 			<option value={i}>{date}</option>
 		{/each}

@@ -1,6 +1,7 @@
 <script>
 	import Keyboard from 'svelte-keyboard';
-	import { width, currentGuess, enterGuess } from '../store';
+	import { width, currentGuess } from '../store';
+	import { enterGuess } from '../controller';
 
 	const onKeydown = ({ detail }) => {
 		if (detail === 'Enter') {
@@ -18,16 +19,16 @@
 {#if $width < 768}
 	<div>
 		<Keyboard
-			--background="rgba(var(--color-accent), 0.4)"
-			--active-background="rgba(var(--color-accent), 0.7)"
+			on:keydown={onKeydown}
+			layout="wordle"
+			--background="rgba(var(--color-accent), 0.2)"
+			--active-background="rgba(var(--color-accent), 0.5)"
 			--color="currentColor"
 			--font-family="'Montserrat', sans-serif'"
 			--font-size="1em"
 			--height="3em"
 			--min-width="1.5em"
 			--border-radius="0"
-			on:keydown={onKeydown}
-			layout="wordle"
 		/>
 	</div>
 {/if}
