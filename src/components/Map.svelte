@@ -2,7 +2,7 @@
 	import { fade } from 'svelte/transition';
 	import Country from './Country.svelte';
 	import Label from './Label.svelte';
-	import { currentPuzzle, clues, mapSize, solutions } from '../store';
+	import { currentPuzzle, sortedClues, mapSize, solutions } from '../store';
 </script>
 
 <div bind:clientWidth={$mapSize}>
@@ -10,10 +10,10 @@
 		{#key $currentPuzzle}
 			{#if $mapSize > 0}
 				<g out:fade={{ duration: 200 }} in:fade={{ duration: 200, delay: 200 }}>
-					{#each $clues.sort((a, b) => $solutions[b.number] - $solutions[a.number]) as { countryID, name, number, d, centroid: [x, y] } (name)}
-						<Country id={countryID} {name} {number} {d} {x} {y} />
+					{#each $sortedClues as { countryID, name, number, mainPath, restPath, centroid: [x, y] } (name)}
+						<Country id={countryID} {name} {number} {mainPath} {restPath} {x} {y} />
 					{/each}
-					{#each $clues as { name, number, centroid: [x, y] }}
+					{#each $sortedClues as { name, number, centroid: [x, y] }}
 						{#if $solutions[number]}
 							<Label {name} {number} {x} {y} />
 						{/if}

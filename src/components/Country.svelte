@@ -2,9 +2,10 @@
 	import { browser } from '$app/env';
 	import { tweened } from 'svelte/motion';
 	import { quadOut as easing } from 'svelte/easing';
+	import { fade } from 'svelte/transition';
 	import { hoveredClue, pickedClue, solutions } from '../store';
 
-	export let number, d, x, y;
+	export let number, mainPath, restPath, x, y;
 
 	const size = 25;
 
@@ -34,7 +35,7 @@
 	$: picked = number === $pickedClue;
 	$: hovered = number === $hoveredClue;
 	$: correct = $solutions[number];
-	$: correct && path.set(d, { duration: interpolate ? 750 : 0, interpolate });
+	$: correct && path.set(mainPath, { duration: interpolate ? 750 : 0, interpolate });
 </script>
 
 <g
@@ -48,6 +49,9 @@
 	on:click={() => ($pickedClue = number)}
 >
 	<path d={$path} />
+	{#if correct}
+		<path transition:fade={{ duration: 750, delay: 400, easing }} d={restPath} />
+	{/if}
 	{#if !correct}
 		<text
 			transform="translate({x}, {y})"
@@ -78,29 +82,31 @@
 	path {
 		fill: transparent;
 		stroke: rgba(var(--color-accent), 0.9);
+		fill: rgb(var(--color-accent));
+		fill-opacity: 0.1;
 		stroke-width: 2;
 		stroke-linecap: square;
 		transition: fill 0.25s;
 
 		.hovered & {
-			fill: rgba(var(--color-accent), 0.2);
+			fill-opacity: 0.4;
 		}
 
 		.correct & {
-			fill: rgba(var(--color-accent), 0.5);
+			fill-opacity: 0.6;
 		}
 
 		.picked &,
 		.correct & {
-			fill: rgba(var(--color-accent), 0.7);
+			fill-opacity: 0.7;
 		}
 
 		.correct.hovered & {
-			fill: rgba(var(--color-accent), 0.8);
+			fill-opacity: 0.8;
 		}
 
 		.picked.correct & {
-			fill: rgba(var(--color-accent), 0.9);
+			fill-opacity: 0.9;
 		}
 	}
 </style>

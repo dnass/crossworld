@@ -37,22 +37,26 @@
 	class:picked
 	class:blink
 >
-	<div>
+	<div class="slide-container">
 		<p>{@html clue}</p>
 		{#if picked && !correct}
 			{#if $formattedGuess}
-				{#key $guessedCountry.name}
-					<div transition:slide={{ duration: 100 }}>
-						<p class="guess">
-							<span>{@html $formattedGuess}</span>
-							<button on:click|stopPropagation={enterGuess}>
-								<img alt="" src="/arrow_circle_right_black_24dp.svg" />
-							</button>
-						</p>
+				<div class="guess-container">
+					<div class="slide-container">
+						{#key $guessedCountry.name}
+							<div transition:slide={{ duration: 100 }}>
+								<p class="guess">
+									<span>{@html $formattedGuess}</span>
+								</p>
+							</div>
+						{/key}
 					</div>
-				{/key}
+					<button transition:fade={{ duration: 100 }} on:click|stopPropagation={enterGuess}>
+						<img alt="" src="/arrow_circle_right_black_24dp.svg" />
+					</button>
+				</div>
 			{:else if !$win}
-				<p class="note">
+				<p class="note" transition:slide|local={{ duration: 100 }}>
 					{#if guessCount > 0}
 						Try again...
 					{:else}
@@ -69,16 +73,27 @@
 		width: 100%;
 	}
 
+	.guess-container {
+		display: flex;
+		flex-direction: row;
+	}
+
+	.slide-container {
+		display: flex;
+		flex-direction: column;
+	}
+
 	button {
 		appearance: none;
 		background: transparent;
 		border: none;
 		cursor: pointer;
-		opacity: 0.9;
+		opacity: 0.8;
 		line-height: 0;
+		transition: 0.1s opacity;
 
 		&:hover {
-			opacity: 0.7;
+			opacity: 0.6;
 		}
 
 		img {

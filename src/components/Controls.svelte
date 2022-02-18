@@ -34,6 +34,7 @@
 	select {
 		width: 2em;
 		appearance: none;
+		-webkit-appearance: none;
 		color: transparent;
 		border: transparent;
 		background-color: transparent;

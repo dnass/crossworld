@@ -40,13 +40,23 @@ const clues = derived(
 
 		return $clueList.map(({ id, clue }, number) => {
 			const feature = features[number];
+			let mainPath, restPath;
+
+			if (feature.geometry.type === 'MultiPolygon') {
+				const [firstSegment, ...rest] = feature.geometry.coordinates;
+				mainPath = path({ type: 'Polygon', coordinates: firstSegment });
+				restPath = path({ type: 'MultiPolygon', coordinates: rest });
+			} else {
+				mainPath = path(feature);
+			}
 
 			return {
 				number,
 				countryID: id,
 				clue: smartquotes(clue),
 				name: feature.properties.name,
-				d: path(feature),
+				mainPath,
+				restPath,
 				centroid: path.centroid(feature)
 			};
 		});
@@ -133,6 +143,10 @@ const ready = derived(
 	([$clues, $solutions]) => $clues.length === $solutions.length
 );
 
+const sortedClues = derived([clues, solutions], ([$clues, $solutions]) =>
+	[...$clues].sort((a, b) => $solutions[b.number] - $solutions[a.number])
+);
+
 export {
 	clueList,
 	clues,
@@ -145,5 +159,6 @@ export {
 	win,
 	shareMessage,
 	ready,
-	currentPuzzleDate
+	currentPuzzleDate,
+	sortedClues
 };

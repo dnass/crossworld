@@ -48,7 +48,6 @@ export const getNextClue = (reverse = false) => {
 	}
 
 	pickedClue.set(index);
-	currentGuess.set('');
 };
 
 export const enterGuess = () => {
@@ -87,6 +86,10 @@ clueList.subscribe(($clueList) => {
 	hoveredClue.set(null);
 	currentGuess.set('');
 	previousGuess.set();
+});
+
+pickedClue.subscribe(() => {
+	currentGuess.set('');
 });
 
 win.subscribe(($win) => $win && winVisible.set(true));
