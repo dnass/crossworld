@@ -1,25 +1,22 @@
 <script>
-	import { slide } from 'svelte/transition';
-	import { clues, currentPuzzle } from '../store';
+	import { clues } from '../store';
 	import { getNextClue } from '../controller';
 	import Clue from './Clue.svelte';
 </script>
 
-{#key $currentPuzzle}
-	<div out:slide={{ duration: 200 }} in:slide={{ duration: 200, delay: 200 }}>
-		<button aria-label="Previous clue" on:click={() => getNextClue(true)}>
-			<img src="/arrow_left_black_24dp.svg" alt="" />
-		</button>
-		<ol>
-			{#each $clues as { number, clue }}
-				<Clue {number} {clue} />
-			{/each}
-		</ol>
-		<button aria-label="Next clue" on:click={() => getNextClue()}>
-			<img src="/arrow_right_black_24dp.svg" alt="" />
-		</button>
-	</div>
-{/key}
+<div>
+	<button aria-label="Previous clue" on:click={() => getNextClue(true)}>
+		<img src="/arrow_left_black_24dp.svg" alt="" />
+	</button>
+	<ol>
+		{#each $clues as { number, clue }}
+			<Clue {number} {clue} />
+		{/each}
+	</ol>
+	<button aria-label="Next clue" on:click={() => getNextClue()}>
+		<img src="/arrow_right_black_24dp.svg" alt="" />
+	</button>
+</div>
 
 <style type="text/scss">
 	div {

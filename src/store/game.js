@@ -1,7 +1,7 @@
 import { geoPath } from 'd3-geo';
 import { writable, derived, get } from 'svelte/store';
 import { countries, countryList, projections } from '../geo';
-import { mapSize, pickedClue, currentGuess } from './state';
+import { mapSize, pickedClue, currentGuess, completedGames } from './state';
 import { hardMode, currentPuzzle } from './settings';
 import { smartquotes, filledArray } from '../utils';
 import { puzzles, puzzleList } from '../puzzles';
@@ -62,6 +62,14 @@ const clues = derived(
 		});
 	}
 );
+
+const alreadyCompleted = derived(
+	[completedGames, currentPuzzleDate],
+	([$completedGames, $currentPuzzleDate]) =>
+		!!$completedGames.find(({ puzzle }) => puzzle === $currentPuzzleDate)
+);
+
+alreadyCompleted.subscribe(console.log);
 
 const solutions = writable(filledArray(get(clues).length, false));
 
@@ -147,6 +155,11 @@ const sortedClues = derived([clues, solutions], ([$clues, $solutions]) =>
 	[...$clues].sort((a, b) => $solutions[b.number] - $solutions[a.number])
 );
 
+const guessesPerClue = derived(
+	guessCounts,
+	($guessCounts) => $guessCounts.reduce((sum, d) => sum + d, 0) / $guessCounts.length
+);
+
 export {
 	clueList,
 	clues,
@@ -160,5 +173,7 @@ export {
 	shareMessage,
 	ready,
 	currentPuzzleDate,
-	sortedClues
+	sortedClues,
+	alreadyCompleted,
+	guessesPerClue
 };

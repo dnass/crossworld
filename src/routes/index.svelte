@@ -1,4 +1,5 @@
 <script>
+	import { dev } from '$app/env';
 	import Analytics from '../components/Analytics.svelte';
 	import Head from '../components/Head.svelte';
 	import Clues from '../components/Clues.svelte';
@@ -16,7 +17,9 @@
 	let height;
 </script>
 
-<Analytics />
+{#if !dev}
+	<Analytics />
+{/if}
 
 <Head />
 

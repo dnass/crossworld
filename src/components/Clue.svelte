@@ -7,7 +7,8 @@
 		formattedGuess,
 		solutions,
 		win,
-		guessCounts
+		guessCounts,
+		alreadyCompleted
 	} from '../store';
 	import { enterGuess } from '../controller';
 
@@ -16,7 +17,7 @@
 	let blink = false;
 
 	$: picked = $pickedClue === number;
-	$: correct = $solutions[number];
+	$: correct = $solutions[number] || $alreadyCompleted;
 	$: guessCount = $guessCounts[number];
 	$: if (guessCount > 0 && picked && !correct) {
 		blink = true;

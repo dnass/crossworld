@@ -3,7 +3,7 @@
 	import { tweened } from 'svelte/motion';
 	import { quadOut as easing } from 'svelte/easing';
 	import { fade } from 'svelte/transition';
-	import { hoveredClue, pickedClue, solutions } from '../store';
+	import { hoveredClue, pickedClue, solutions, alreadyCompleted } from '../store';
 
 	export let number, mainPath, restPath, x, y;
 
@@ -30,18 +30,19 @@
 		duration: 0
 	});
 
-	$: !correct && path.set(initialPath);
+	$: !show && path.set(initialPath);
 
 	$: picked = number === $pickedClue;
 	$: hovered = number === $hoveredClue;
-	$: correct = $solutions[number];
-	$: correct && path.set(mainPath, { duration: interpolate ? 750 : 0, interpolate });
+	$: show = $solutions[number] || $alreadyCompleted;
+	$: show &&
+		path.set(mainPath, { duration: interpolate && !$alreadyCompleted ? 750 : 0, interpolate });
 </script>
 
 <g
 	class:picked
 	class:hovered
-	class:correct
+	class:correct={show}
 	on:mouseover={() => ($hoveredClue = number)}
 	on:mouseout={() => ($hoveredClue = null)}
 	on:focus={() => ($hoveredClue = number)}
@@ -49,10 +50,10 @@
 	on:click={() => ($pickedClue = number)}
 >
 	<path d={$path} />
-	{#if correct}
-		<path transition:fade={{ duration: 750, delay: 400, easing }} d={restPath} />
+	{#if show}
+		<path transition:fade|local={{ duration: 750, delay: 400, easing }} d={restPath} />
 	{/if}
-	{#if !correct}
+	{#if !show}
 		<text
 			transform="translate({x}, {y})"
 			style:font-size="{size * 0.8}px"
@@ -93,20 +94,15 @@
 		}
 
 		.correct & {
+			fill-opacity: 0.5;
+		}
+
+		.hovered.correct & {
 			fill-opacity: 0.6;
 		}
 
-		.picked &,
-		.correct & {
+		.picked & {
 			fill-opacity: 0.7;
-		}
-
-		.correct.hovered & {
-			fill-opacity: 0.8;
-		}
-
-		.picked.correct & {
-			fill-opacity: 0.9;
 		}
 	}
 </style>

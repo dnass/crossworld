@@ -14,7 +14,14 @@ import {
 	win,
 	winVisible,
 	input,
-	modalVisible
+	modalVisible,
+	alreadyCompleted,
+	completedGames,
+	currentPuzzleDate,
+	guessesPerClue,
+	startTime,
+	currentPuzzle,
+	showMap
 } from './store';
 
 export const getNextClue = (reverse = false) => {
@@ -79,6 +86,8 @@ export const focusSearch = () => {
 	el.focus();
 };
 
+currentPuzzle.subscribe(() => showMap.set(false));
+
 clueList.subscribe(($clueList) => {
 	solutions.set(filledArray($clueList.length, false));
 	guessCounts.set(filledArray($clueList.length, 0));
@@ -86,13 +95,29 @@ clueList.subscribe(($clueList) => {
 	hoveredClue.set(null);
 	currentGuess.set('');
 	previousGuess.set();
+
+	startTime.set(new Date().toISOString());
+	showMap.set(true);
 });
 
 pickedClue.subscribe(() => {
 	currentGuess.set('');
 });
 
-win.subscribe(($win) => $win && winVisible.set(true));
+win.subscribe(($win) => {
+	if (!get(alreadyCompleted) && $win) {
+		winVisible.set(true);
+
+		const game = {
+			puzzle: get(currentPuzzleDate),
+			guessesPerClue: get(guessesPerClue),
+			startTime: get(startTime),
+			endTime: new Date().toISOString()
+		};
+
+		completedGames.update((games) => [game, ...games]);
+	}
+});
 
 if (browser) {
 	document.addEventListener('keydown', (e) => {

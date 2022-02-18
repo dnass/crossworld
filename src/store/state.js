@@ -1,4 +1,5 @@
 import { writable, derived } from 'svelte/store';
+import { localStore } from '../utils';
 
 const settingsVisible = writable(false);
 
@@ -23,6 +24,12 @@ const width = writable(768);
 
 const input = writable();
 
+const completedGames = localStore('completed-games', []);
+
+const startTime = writable(new Date().toISOString());
+
+const showMap = writable(true);
+
 export {
 	mapSize,
 	pickedClue,
@@ -33,5 +40,8 @@ export {
 	modalVisible,
 	currentGuess,
 	width,
-	input
+	input,
+	completedGames,
+	startTime,
+	showMap
 };

@@ -1,6 +1,6 @@
 <script>
 	import Spinner from '../Spinner.svelte';
-	import { shareMessage, currentPuzzleDate } from '../../store';
+	import { shareMessage, currentPuzzleDate, completedGames, guessesPerClue } from '../../store';
 	import { trackEvent } from '../../utils';
 
 	let copied = false;
@@ -17,8 +17,18 @@
 	};
 </script>
 
-<div>
+<div class="win">
 	<h2><Spinner spin /> You won!</h2>
+	<div class="stats">
+		<div class="stat">
+			<div class="number">{$completedGames.length}</div>
+			<div class="label">Current<br />streak</div>
+		</div>
+		<div class="stat">
+			<div class="number">{$guessesPerClue}</div>
+			<div class="label">Guesses<br />per clue</div>
+		</div>
+	</div>
 	<button on:click={share}>
 		{#if copied}
 			Copied to clipboard
@@ -30,13 +40,35 @@
 </div>
 
 <style type="text/scss">
-	div {
+	.win {
 		display: flex;
 		justify-content: center;
 		align-items: center;
 		flex-direction: column;
 		gap: 1.5em;
 		height: 100%;
+	}
+
+	.stats {
+		display: flex;
+		gap: 1em;
+		margin-bottom: 8px;
+
+		.stat {
+			display: flex;
+			flex-direction: column;
+			text-align: center;
+
+			.number {
+				font-size: 2em;
+				font-weight: 900;
+			}
+
+			.label {
+				font-size: 0.7em;
+				text-transform: uppercase;
+			}
+		}
 	}
 
 	h2 {
