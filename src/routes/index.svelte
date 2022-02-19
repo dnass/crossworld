@@ -69,6 +69,7 @@
 		flex-direction: column-reverse;
 		flex-grow: 1;
 		justify-content: flex-end;
+		align-items: center;
 
 		@media (min-width: 768px) {
 			gap: 1em;

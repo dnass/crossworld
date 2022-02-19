@@ -31,6 +31,7 @@
 	<meta name="twitter:card" content="summary_large_image" />
 	<meta name="twitter:title" content={title} />
 	<meta name="twitter:image" content={image} />
+	<meta name="theme-color" content={$darkMode ? 'rgb(10, 10, 10)' : 'rgb(250, 250, 250)'} />
 
 	{@html themeStyle}
 </svelte:head>

@@ -61,7 +61,7 @@
 					{#if guessCount > 0}
 						Try again...
 					{:else}
-						Start typing a country...
+						Start typing a guess...
 					{/if}
 				</p>
 			{/if}
@@ -107,9 +107,13 @@
 		align-items: center;
 		transition: 0.25s background, 0.25s opacity;
 		list-style: none;
-		padding: 8px 8px 8px 12px;
+		padding: 4px 8px 4px 12px;
 		gap: 4px;
 		cursor: pointer;
+
+		@media (min-width: 768px) {
+			padding: 8px 8px 8px 12px;
+		}
 
 		&:before {
 			content: counter(index, decimal);
@@ -142,9 +146,10 @@
 
 	p {
 		margin: 0;
+		font-size: 0.9em;
 
 		&.guess {
-			font-size: 1.5em;
+			font-size: 1.4em;
 			display: flex;
 			line-height: 1;
 			align-items: center;

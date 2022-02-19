@@ -14,7 +14,7 @@
 					{#each $sortedClues as { countryID, name, number, mainPath, restPath, centroid: [x, y] } (name)}
 						<Country id={countryID} {name} {number} {mainPath} {restPath} {x} {y} />
 					{/each}
-					{#each $sortedClues as { name, number, centroid: [x, y] }}
+					{#each $sortedClues as { name, number, centroid: [x, y] } (name)}
 						<Label {name} {number} {x} {y} />
 					{/each}
 				</g>
@@ -26,10 +26,6 @@
 <style type="text/scss">
 	div {
 		width: 100%;
-
-		@media (max-width: 767px) {
-			margin-bottom: 0.5em;
-		}
 	}
 
 	svg {

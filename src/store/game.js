@@ -69,8 +69,6 @@ const alreadyCompleted = derived(
 		!!$completedGames.find(({ puzzle }) => puzzle === $currentPuzzleDate)
 );
 
-alreadyCompleted.subscribe(console.log);
-
 const solutions = writable(filledArray(get(clues).length, false));
 
 const guessCounts = writable(filledArray(get(clues).length, 0));

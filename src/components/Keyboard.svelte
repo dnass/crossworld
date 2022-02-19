@@ -26,7 +26,7 @@
 			--color="currentColor"
 			--font-family="'Montserrat', sans-serif'"
 			--font-size="1em"
-			--height="3em"
+			--height="2.5em"
 			--min-width="1.5em"
 			--border-radius="0"
 		/>
@@ -40,6 +40,7 @@
 		flex: 1;
 		justify-content: flex-end;
 		margin: 0.5em 0 0.25em;
+		width: 100%;
 
 		:global(button) {
 			padding: 0;
