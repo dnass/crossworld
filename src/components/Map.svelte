@@ -1,5 +1,4 @@
 <script>
-	import { fade } from 'svelte/transition';
 	import Country from './Country.svelte';
 	import Label from './Label.svelte';
 	import { sortedClues, mapSize, showMap, currentPuzzle } from '../store';

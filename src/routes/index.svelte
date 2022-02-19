@@ -74,6 +74,7 @@
 		@media (min-width: 768px) {
 			gap: 1em;
 			flex-direction: row;
+			align-items: flex-start;
 		}
 	}
 

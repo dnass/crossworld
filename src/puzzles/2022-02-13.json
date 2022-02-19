@@ -12,7 +12,8 @@
 		},
 		{
 			"id": "578",
-			"clue": "Fjord world headquarters?"
+			"clue": "Fjord world headquarters?",
+			"mainlandOnly": true
 		},
 		{
 			"id": "752",

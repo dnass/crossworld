@@ -19,7 +19,9 @@ const projection = derived(currentPuzzle, ($currentPuzzle) => puzzles[$currentPu
 const clues = derived(
 	[clueList, projection, mapSize, rotation],
 	([$clueList, $projection, $mapSize, $rotation]) => {
-		const features = $clueList.map(({ id }) => countries.get(id));
+		const features = $clueList.map(
+			({ id, mainlandOnly }) => countries.get(id)[mainlandOnly ? 'mainPath' : 'wholePath']
+		);
 
 		const pad = $mapSize * 0.025;
 
@@ -32,32 +34,23 @@ const clues = derived(
 				],
 				{
 					type: 'FeatureCollection',
-					features
+					features: features
 				}
 			);
 
 		const path = geoPath(projection);
 
-		return $clueList.map(({ id, clue }, number) => {
-			const feature = features[number];
-			let mainPath, restPath;
-
-			if (feature.geometry.type === 'MultiPolygon') {
-				const [firstSegment, ...rest] = feature.geometry.coordinates;
-				mainPath = path({ type: 'Polygon', coordinates: firstSegment });
-				restPath = path({ type: 'MultiPolygon', coordinates: rest });
-			} else {
-				mainPath = path(feature);
-			}
+		return $clueList.map(({ id, clue, mainlandOnly }, number) => {
+			const feature = countries.get(id);
 
 			return {
 				number,
 				countryID: id,
 				clue: smartquotes(clue),
-				name: feature.properties.name,
-				mainPath,
-				restPath,
-				centroid: path.centroid(feature)
+				name: feature.name,
+				mainPath: path(feature.mainPath),
+				restPath: feature.restPath ? path(feature.restPath) : null,
+				centroid: path.centroid(mainlandOnly ? feature.mainPath : feature.wholePath)
 			};
 		});
 	}

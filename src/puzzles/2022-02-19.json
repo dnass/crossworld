@@ -1,0 +1,28 @@
+{
+	"date": "2022-02-19",
+	"projection": "geoConicEquidistant",
+	"clues": [
+		{
+			"id": "620",
+			"clue": "The <em>saudade</em> capital of the world",
+			"mainlandOnly": true
+		},
+		{
+			"id": "504",
+			"clue": "Where \"we'll always have Paris\" was spoken"
+		},
+		{
+			"id": "788",
+			"clue": "Present-day location of Carthage"
+		},
+		{
+			"id": "724",
+			"clue": "Its highest point is Teide, in the Atlantic",
+			"mainlandOnly": true
+		},
+		{
+			"id": "012",
+			"clue": "It gained independence from France in 1962"
+		}
+	]
+}

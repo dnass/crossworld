@@ -26,8 +26,6 @@
 </script>
 
 <li
-	out:fade={{ duration: 200 }}
-	in:fade={{ duration: 200, delay: 200 }}
 	on:mouseover={() => ($hoveredClue = number)}
 	on:focus={() => ($hoveredClue = number)}
 	on:mouseout={() => ($hoveredClue = null)}

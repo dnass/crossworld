@@ -9,7 +9,7 @@
 		<img src="/arrow_left_black_24dp.svg" alt="" />
 	</button>
 	<ol>
-		{#each $clues as { number, clue }}
+		{#each $clues as { number, clue } (clue)}
 			<Clue {number} {clue} />
 		{/each}
 	</ol>

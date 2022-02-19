@@ -1,5 +1,5 @@
 import { get } from 'svelte/store';
-import { browser } from '$app/env';
+import { browser, dev } from '$app/env';
 import { filledArray } from './utils';
 import {
 	clueList,
@@ -21,7 +21,8 @@ import {
 	guessesPerClue,
 	startTime,
 	currentPuzzle,
-	showMap
+	showMap,
+	shareMessage
 } from './store';
 
 export const getNextClue = (reverse = false) => {
@@ -118,6 +119,14 @@ win.subscribe(($win) => {
 		completedGames.update((games) => [game, ...games]);
 	}
 });
+
+if (dev) {
+	clueList.subscribe((value) => console.log('clueList\n', value));
+
+	shareMessage.subscribe((value) => {
+		console.log('share message\n', value);
+	});
+}
 
 if (browser) {
 	document.addEventListener('keydown', (e) => {
