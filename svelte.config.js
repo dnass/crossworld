@@ -5,7 +5,12 @@ import preprocess from 'svelte-preprocess';
 const config = {
 	preprocess: preprocess(),
 	kit: {
-		adapter: netlify()
+		adapter: netlify(),
+		vite: {
+			optimizeDeps: {
+				include: ['flubber', 'd3-geo', 'd3-time-format']
+			}
+		}
 	}
 };
 

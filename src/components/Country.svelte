@@ -1,8 +1,8 @@
 <script>
-	import { browser } from '$app/env';
 	import { tweened } from 'svelte/motion';
 	import { quadOut as easing } from 'svelte/easing';
 	import { fade } from 'svelte/transition';
+	import * as flubber from 'flubber';
 	import { hoveredClue, pickedClue, solutions, alreadyCompleted } from '../store';
 
 	export let number, mainPath, restPath, x, y;
@@ -19,15 +19,10 @@
 		.map((coords) => coords.join(','))
 		.join(' ')}`;
 
-	let interpolate;
-
-	if (browser) {
-		import('flubber').then(({ interpolate: i }) => (interpolate = i));
-	}
-
 	const path = tweened(initialPath, {
 		easing,
-		duration: 0
+		duration: 0,
+		interpolate: (a, b) => flubber.interpolate(a, b, { maxSegmentLength: 100 })
 	});
 
 	$: !show && path.set(initialPath);
@@ -35,8 +30,7 @@
 	$: picked = number === $pickedClue;
 	$: hovered = number === $hoveredClue;
 	$: show = $solutions[number] || $alreadyCompleted;
-	$: show &&
-		path.set(mainPath, { duration: interpolate && !$alreadyCompleted ? 750 : 0, interpolate });
+	$: show && path.set(mainPath, { duration: !$alreadyCompleted ? 750 : 0 });
 </script>
 
 <g
