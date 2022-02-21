@@ -28,3 +28,14 @@ export const trackEvent = (name, event_label) => {
 		gtag('event', name, { event_label });
 	}
 };
+
+export const squarePath = (x, y, size) =>
+	`M${[
+		[x, y],
+		[x + size, y],
+		[x + size, y + size],
+		[x, y + size],
+		[x, y],
+	]
+		.map((coords) => coords.join(','))
+		.join(' ')}`;

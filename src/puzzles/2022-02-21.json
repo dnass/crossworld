@@ -1,0 +1,30 @@
+{
+	"date": "2022-02-21",
+	"projection": "geoNaturalEarth1",
+	"clues": [
+		{
+			"id": "332",
+			"clue": "The first country in the Americas to abolish slavery"
+		},
+		{
+			"id": "192",
+			"clue": "The habanero is its capital's namesake"
+		},
+		{
+			"id": "214",
+			"clue": "Its national anthem refers to its inhabitants as <em>quisqueyanos</em>"
+		},
+		{
+			"id": "136",
+			"clue": "The \"shore\" in offshore, often"
+		},
+		{
+			"id": "044",
+			"clue": "About 30 of its 700 islands are inhabited"
+		},
+		{
+			"id": "388",
+			"clue": "Marcus Garvey holds this country's Order of the National Hero"
+		}
+	]
+}

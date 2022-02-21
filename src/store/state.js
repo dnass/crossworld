@@ -30,6 +30,8 @@ const startTime = writable(new Date().toISOString());
 
 const showMap = writable(true);
 
+const submittedOnce = writable(false);
+
 export {
 	mapSize,
 	pickedClue,
@@ -43,5 +45,6 @@ export {
 	input,
 	completedGames,
 	startTime,
-	showMap
+	showMap,
+	submittedOnce,
 };

@@ -24,17 +24,40 @@ export const countries = new Map(
 				name: feature.properties.name,
 				mainPath,
 				restPath,
-				wholePath: feature
-			}
+				wholePath: feature,
+			},
 		];
 	})
 );
 
+const replacements = {
+	'Is.': 'Islands',
+	'I.': 'Island',
+	'N.': 'North',
+	'W.': 'West',
+	'E.': 'East',
+	'S. Sudan': 'South Sudan',
+	'Barb.': 'Barbuda',
+	'Herz.': 'Herzegovina',
+	'Dem. Rep.': 'Democratic Republic of the',
+	'Rep.': 'Republic',
+	'Fr.': 'French',
+	'St. Vin. and Gren.': 'St. Vincent and the Grenadines',
+	'Eq.': 'Equatorial',
+	'Ter.': 'Territory',
+};
+
 export const countryList = features
-	.map((country) => ({
-		id: country.id,
-		name: country.properties.name
-	}))
+	.map((country) => {
+		const name = Object.entries(replacements).reduce(
+			(name, [string, sub]) => name.replace(string, sub),
+			country.properties.name
+		);
+
+		const cleanName = name.toLowerCase().replace(/[^a-z]/g, '');
+
+		return { id: country.id, name, cleanName };
+	})
 	.sort((a, b) =>
 		a.name.toLowerCase() > b.name.toLowerCase()
 			? 1
@@ -43,9 +66,11 @@ export const countryList = features
 			: 0
 	);
 
+console.log(countryList.filter((d) => d.name.includes('.')));
+
 export const projections = {
 	geoTransverseMercator,
 	geoNaturalEarth1,
 	geoAlbers,
-	geoConicEquidistant
+	geoConicEquidistant,
 };

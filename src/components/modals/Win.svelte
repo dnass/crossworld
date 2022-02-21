@@ -25,7 +25,7 @@
 			<div class="label">Current<br />streak</div>
 		</div>
 		<div class="stat">
-			<div class="number">{$guessesPerClue}</div>
+			<div class="number">{$guessesPerClue.toFixed(1)}</div>
 			<div class="label">Guesses<br />per clue</div>
 		</div>
 	</div>

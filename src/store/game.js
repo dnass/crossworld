@@ -30,11 +30,11 @@ const clues = derived(
 			.fitExtent(
 				[
 					[pad, pad],
-					[$mapSize - pad, $mapSize - pad]
+					[$mapSize - pad, $mapSize - pad],
 				],
 				{
 					type: 'FeatureCollection',
-					features: features
+					features: features,
 				}
 			);
 
@@ -50,7 +50,7 @@ const clues = derived(
 				name: feature.name,
 				mainPath: path(feature.mainPath),
 				restPath: feature.restPath ? path(feature.restPath) : null,
-				centroid: path.centroid(mainlandOnly ? feature.mainPath : feature.wholePath)
+				centroid: path.centroid(mainlandOnly ? feature.mainPath : feature.wholePath),
 			};
 		});
 	}
@@ -85,14 +85,14 @@ const shareMessage = derived(
 
 		const allCoords = [
 			...$clues.map((clue) => clue.centroid[0]),
-			...$clues.map((clue) => clue.centroid[1])
+			...$clues.map((clue) => clue.centroid[1]),
 		];
 		const min = Math.min(...allCoords);
 		const max = Math.max(...allCoords);
 
 		const positions = $clues.map((clue, number) => ({
 			number,
-			coords: clue.centroid.map((coord) => Math.round(((coord - min) / max) * gridSize))
+			coords: clue.centroid.map((coord) => Math.round(((coord - min) / max) * gridSize)),
 		}));
 
 		let grid = '';
@@ -118,7 +118,7 @@ const guessedCountry = derived(currentGuess, ($currentGuess) => {
 
 	const match = [...countryList]
 		.sort(() => 0.5 - Math.random())
-		.find(({ name }) => name.toLowerCase().includes(cleanGuess));
+		.find(({ cleanName }) => cleanName.includes(cleanGuess));
 
 	if (match) {
 		previousGuess.set(match);
@@ -131,7 +131,7 @@ const guessedCountry = derived(currentGuess, ($currentGuess) => {
 const formattedGuess = derived([currentGuess, guessedCountry], ([$currentGuess, $guessedCountry]) =>
 	$guessedCountry
 		? $guessedCountry.name.replace(
-				new RegExp($currentGuess, 'gi'),
+				new RegExp($currentGuess.split('').join('\\.? ?'), 'gi'),
 				(match) => `<strong>${match}</strong>`
 		  )
 		: null
@@ -166,5 +166,5 @@ export {
 	currentPuzzleDate,
 	sortedClues,
 	alreadyCompleted,
-	guessesPerClue
+	guessesPerClue,
 };

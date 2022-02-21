@@ -1,5 +1,3 @@
-<svelte:options namespace="svg" />
-
 <script>
 	import { fade } from 'svelte/transition';
 	import { hoveredClue, pickedClue, solutions, alreadyCompleted } from '../store';

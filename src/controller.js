@@ -22,7 +22,8 @@ import {
 	startTime,
 	currentPuzzle,
 	showMap,
-	shareMessage
+	shareMessage,
+	submittedOnce,
 } from './store';
 
 export const getNextClue = (reverse = false) => {
@@ -76,6 +77,9 @@ export const enterGuess = () => {
 		solutions.set(solutionList);
 		hoveredClue.set(null);
 		getNextClue();
+		submittedOnce.set(false);
+	} else {
+		submittedOnce.set(true);
 	}
 
 	currentGuess.set('');
@@ -103,6 +107,7 @@ clueList.subscribe(($clueList) => {
 
 pickedClue.subscribe(() => {
 	currentGuess.set('');
+	submittedOnce.set(false);
 });
 
 win.subscribe(($win) => {
@@ -113,7 +118,7 @@ win.subscribe(($win) => {
 			puzzle: get(currentPuzzleDate),
 			guessesPerClue: get(guessesPerClue),
 			startTime: get(startTime),
-			endTime: new Date().toISOString()
+			endTime: new Date().toISOString(),
 		};
 
 		completedGames.update((games) => [game, ...games]);

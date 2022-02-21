@@ -1,4 +1,5 @@
 <script>
+	import { tick } from 'svelte';
 	import { fade, slide } from 'svelte/transition';
 	import {
 		hoveredClue,
@@ -8,20 +9,21 @@
 		solutions,
 		win,
 		guessCounts,
-		alreadyCompleted
+		alreadyCompleted,
+		submittedOnce,
 	} from '../store';
 	import { enterGuess } from '../controller';
 
 	export let number, clue;
 
-	let blink = false;
+	let shake = false;
 
 	$: picked = $pickedClue === number;
 	$: correct = $solutions[number] || $alreadyCompleted;
 	$: guessCount = $guessCounts[number];
-	$: if (guessCount > 0 && picked && !correct) {
-		blink = true;
-		setTimeout(() => (blink = false), 400);
+	$: if (guessCount > 0 && picked && !correct && $submittedOnce) {
+		shake = true;
+		setTimeout(() => (shake = false), 300);
 	}
 </script>
 
@@ -34,7 +36,7 @@
 	class:correct
 	class:hovered={$hoveredClue === number}
 	class:picked
-	class:blink
+	class:shake
 >
 	<div class="slide-container">
 		<p>{@html clue}</p>
@@ -56,7 +58,7 @@
 				</div>
 			{:else if !$win}
 				<p class="note" transition:slide|local={{ duration: 100 }}>
-					{#if guessCount > 0}
+					{#if $submittedOnce}
 						Try again...
 					{:else}
 						Start typing a guess...
@@ -137,8 +139,8 @@
 			opacity: 0.5;
 		}
 
-		&.blink {
-			animation: blink 0.4s ease-in-out;
+		&.shake {
+			animation: shake 0.3s ease-in-out;
 		}
 	}
 
@@ -166,6 +168,9 @@
 
 		&.note {
 			font-size: 0.8em;
+			border-left: 1px solid rgba(var(--color-foreground), 0);
+			animation: 0.75s cursor infinite;
+			padding: 1px 0 1px 4px;
 		}
 
 		&:not(:last-child) {
@@ -175,7 +180,7 @@
 
 	@media (max-width: 767px) {
 		li {
-			background-color: rgb(var(--color-accent), 0.7) !important;
+			background-color: rgba(var(--color-accent), 0.7) !important;
 			&:not(.picked) {
 				position: absolute;
 				left: -9999px;
@@ -183,15 +188,41 @@
 		}
 	}
 
-	@keyframes blink {
+	@keyframes shake {
 		0% {
-			opacity: 1;
+			transform: translateX(0);
 		}
-		50% {
+
+		25% {
+			transform: translateX(-10px);
 			opacity: 0.5;
 		}
+
+		75% {
+			transform: translateX(10px);
+			opacity: 0.5;
+		}
+
 		100% {
-			opacity: 1;
+			transform: translateX(0);
+		}
+	}
+
+	@keyframes cursor {
+		0% {
+			border-left-color: rgba(var(--color-foreground), 0);
+		}
+
+		20% {
+			border-left-color: rgba(var(--color-foreground), 0.3);
+		}
+
+		50% {
+			border-left-color: rgba(var(--color-foreground), 0.3);
+		}
+
+		70% {
+			border-left-color: rgba(var(--color-foreground), 0);
 		}
 	}
 </style>

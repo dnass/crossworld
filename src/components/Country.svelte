@@ -4,32 +4,23 @@
 	import { fade } from 'svelte/transition';
 	import * as flubber from 'flubber';
 	import { hoveredClue, pickedClue, solutions, alreadyCompleted } from '../store';
+	import { squarePath } from '../utils';
 
 	export let number, mainPath, restPath, x, y;
 
 	const size = 25;
 
-	$: initialPath = `M${[
-		[x, y],
-		[x + size, y],
-		[x + size, y + size],
-		[x, y + size],
-		[x, y]
-	]
-		.map((coords) => coords.join(','))
-		.join(' ')}`;
-
-	const path = tweened(initialPath, {
+	const path = tweened(null, {
 		easing,
 		duration: 0,
-		interpolate: (a, b) => flubber.interpolate(a, b, { maxSegmentLength: 100 })
+		interpolate: (a, b) => flubber.interpolate(a, b, { maxSegmentLength: 100 }),
 	});
-
-	$: !show && path.set(initialPath);
 
 	$: picked = number === $pickedClue;
 	$: hovered = number === $hoveredClue;
 	$: show = $solutions[number] || $alreadyCompleted;
+
+	$: !show && path.set(squarePath(x, y, size));
 	$: show && path.set(mainPath, { duration: !$alreadyCompleted ? 750 : 0 });
 </script>
 

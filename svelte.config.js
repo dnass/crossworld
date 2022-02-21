@@ -8,10 +8,13 @@ const config = {
 		adapter: netlify(),
 		vite: {
 			optimizeDeps: {
-				include: ['flubber', 'd3-geo', 'd3-time-format']
-			}
-		}
-	}
+				include: ['flubber', 'd3-geo', 'd3-time-format'],
+			},
+			ssr: {
+				noExternal: ['d3-geo', 'd3-time-format'],
+			},
+		},
+	},
 };
 
 export default config;
