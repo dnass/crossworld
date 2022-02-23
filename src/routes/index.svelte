@@ -12,9 +12,20 @@
 	import Keyboard from '../components/Keyboard.svelte';
 	import Help from '../components/modals/Help.svelte';
 	import Win from '../components/modals/Win.svelte';
-	import { settingsVisible, helpVisible, darkMode, win, winVisible, width } from '../store';
+	import {
+		settingsVisible,
+		helpVisible,
+		darkMode,
+		win,
+		winVisible,
+		width,
+		mapSize,
+	} from '../store';
 
-	let height;
+	let height, navHeight, floatHeight;
+
+	$: mobile = $width < 768;
+	$: mapOverflow = height + $mapSize - (height - navHeight - floatHeight);
 </script>
 
 {#if !dev}
@@ -28,13 +39,19 @@
 <CountrySearch />
 
 <div class="body" class:dark={$darkMode} style:height={height ? `${height}px` : null}>
-	<nav>
+	<nav bind:clientHeight={navHeight}>
 		<Title />
 		<Controls />
 	</nav>
-	<div class="game">
-		<Keyboard />
-		<Clues />
+	<div
+		class="game"
+		style:min-height={height && mobile ? `calc(${mapOverflow}px - 2.5em)` : null}
+		style:margin-top={mobile ? `${navHeight}px` : null}
+	>
+		<div class="float" bind:clientHeight={floatHeight}>
+			<Clues />
+			<Keyboard />
+		</div>
 		<Map />
 	</div>
 	{#if $settingsVisible}
@@ -62,14 +79,23 @@
 		height: 100vh;
 		margin: 0 auto;
 		padding: 1em;
+
+		@media (max-width: 767px) {
+			padding: 0 1em;
+		}
+
+		@media (max-width: 480px) {
+			padding: 0 0.75em;
+		}
 	}
 
 	.game {
 		display: flex;
-		flex-direction: column-reverse;
+		flex-direction: column;
 		flex-grow: 1;
-		justify-content: flex-end;
+		justify-content: space-between;
 		align-items: center;
+		height: 100%;
 
 		@media (min-width: 768px) {
 			gap: 1em;
@@ -78,11 +104,30 @@
 		}
 	}
 
+	@media (max-width: 767px) {
+		.float,
+		nav {
+			left: 0;
+			right: 0;
+			position: fixed;
+			padding: 0.5em 0.75em;
+			z-index: 1;
+			background-color: rgb(var(--color-background));
+		}
+
+		.float {
+			bottom: 0;
+		}
+
+		nav {
+			top: 0;
+		}
+	}
+
 	nav {
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
-		margin-bottom: 0.75em;
 
 		@media (min-width: 768px) {
 			margin-top: 4em;

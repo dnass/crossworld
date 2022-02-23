@@ -29,18 +29,14 @@
 			--height="2.5em"
 			--min-width="1.5em"
 			--border-radius="0"
+			--margin="0.125em"
 		/>
 	</div>
 {/if}
 
 <style type="text/scss">
 	div {
-		display: flex;
-		flex-direction: column;
-		flex: 1;
-		justify-content: flex-end;
-		margin: 0.5em 0 0.25em;
-		width: 100%;
+		margin: 0.25em -0.125em 0;
 
 		:global(button) {
 			padding: 0;

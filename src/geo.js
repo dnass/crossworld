@@ -66,8 +66,6 @@ export const countryList = features
 			: 0
 	);
 
-console.log(countryList.filter((d) => d.name.includes('.')));
-
 export const projections = {
 	geoTransverseMercator,
 	geoNaturalEarth1,
