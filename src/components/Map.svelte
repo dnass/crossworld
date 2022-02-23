@@ -7,7 +7,7 @@
 <div bind:clientWidth={$mapSize}>
 	{#key $currentPuzzle}
 		<!-- <svg out:fade={{ duration: 200 }} in:fade={{ duration: 200, delay: 200 }}> -->
-		<svg>
+		<svg height={$mapSize}>
 			{#if $mapSize > 0}
 				<g>
 					{#each $sortedClues as { countryID, name, number, mainPath, restPath, centroid: [x, y] } (name)}
@@ -30,6 +30,5 @@
 	svg {
 		width: 100%;
 		background: #222;
-		aspect-ratio: 1;
 	}
 </style>
