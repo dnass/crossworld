@@ -18,7 +18,7 @@
 	let shake = false;
 
 	$: picked = $pickedClue === number;
-	$: correct = $solutions[number];
+	$: correct = $solutions[number] || $alreadyCompleted;
 	$: guessCount = $guessCounts[number];
 	$: if (guessCount > 0 && picked && !correct && $submittedOnce) {
 		shake = true;
