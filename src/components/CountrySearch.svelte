@@ -1,6 +1,6 @@
 <script>
 	import { onMount } from 'svelte';
-	import { currentGuess, width, input } from '../store';
+	import { currentGuess, mobile, input } from '../store';
 	import { focusSearch } from '../controller';
 
 	onMount(() => {
@@ -10,7 +10,7 @@
 	});
 </script>
 
-{#if $width >= 768}
+{#if !$mobile}
 	<input bind:this={$input} bind:value={$currentGuess} />
 {/if}
 

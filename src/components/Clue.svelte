@@ -1,5 +1,4 @@
 <script>
-	import { tick } from 'svelte';
 	import { fade, slide } from 'svelte/transition';
 	import {
 		hoveredClue,
@@ -19,7 +18,7 @@
 	let shake = false;
 
 	$: picked = $pickedClue === number;
-	$: correct = $solutions[number] || $alreadyCompleted;
+	$: correct = $solutions[number];
 	$: guessCount = $guessCounts[number];
 	$: if (guessCount > 0 && picked && !correct && $submittedOnce) {
 		shake = true;
@@ -56,7 +55,7 @@
 						<img alt="" src="/arrow_circle_right_black_24dp.svg" />
 					</button>
 				</div>
-			{:else if !$win}
+			{:else if !$win && picked}
 				<p class="note" transition:slide|local={{ duration: 100 }}>
 					{#if $submittedOnce}
 						Try again...
@@ -86,7 +85,7 @@
 
 	button {
 		appearance: none;
-		background: transparent;
+		background-color: transparent;
 		border: none;
 		cursor: pointer;
 		opacity: 0.8;
@@ -105,7 +104,7 @@
 	li {
 		display: flex;
 		align-items: center;
-		transition: 0.25s background, 0.25s opacity;
+		transition: 0.25s background-color, 0.25s opacity;
 		list-style: none;
 		padding: 4px 8px 4px 12px;
 		gap: 4px;
@@ -128,11 +127,11 @@
 		}
 
 		&.hovered {
-			background: rgba(var(--color-accent), 0.2);
+			background-color: rgba(var(--color-accent), 0.2);
 		}
 
 		&.picked {
-			background: rgba(var(--color-accent), 0.7);
+			background-color: rgba(var(--color-accent), 0.7);
 		}
 
 		&.correct {
@@ -180,11 +179,7 @@
 
 	@media (max-width: 767px) {
 		li {
-			background-color: rgba(var(--color-accent), 0.7) !important;
-			&:not(.picked) {
-				position: absolute;
-				left: -9999px;
-			}
+			flex: 1 0 100%;
 		}
 	}
 

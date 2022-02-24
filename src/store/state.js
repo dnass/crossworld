@@ -22,13 +22,13 @@ const currentGuess = writable();
 
 const width = writable(768);
 
+const mobile = derived(width, ($width) => $width < 768);
+
 const input = writable();
 
 const completedGames = localStore('completed-games', []);
 
 const startTime = writable(new Date().toISOString());
-
-const showMap = writable(true);
 
 const submittedOnce = writable(false);
 
@@ -45,6 +45,6 @@ export {
 	input,
 	completedGames,
 	startTime,
-	showMap,
 	submittedOnce,
+	mobile,
 };

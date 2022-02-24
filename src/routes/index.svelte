@@ -19,12 +19,12 @@
 		win,
 		winVisible,
 		width,
+		mobile,
 		mapSize,
 	} from '../store';
 
 	let height, navHeight, floatHeight;
 
-	$: mobile = $width < 768;
 	$: mapOverflow = height + $mapSize - (height - navHeight - floatHeight);
 </script>
 
@@ -39,18 +39,22 @@
 <CountrySearch />
 
 <div class="body" class:dark={$darkMode} style:height={height ? `${height}px` : null}>
-	<nav bind:clientHeight={navHeight}>
-		<Title />
-		<Controls />
+	<nav>
+		<div bind:clientHeight={navHeight}>
+			<Title />
+			<Controls />
+		</div>
 	</nav>
 	<div
 		class="game"
-		style:min-height={height && mobile ? `calc(${mapOverflow}px - 2.5em)` : null}
-		style:margin-top={mobile ? `${navHeight}px` : null}
+		style:min-height={height && $mobile ? `calc(${mapOverflow}px - 2.5em)` : null}
+		style:margin-top={$mobile ? `${navHeight}px` : null}
 	>
-		<div class="float" bind:clientHeight={floatHeight}>
-			<Clues />
-			<Keyboard />
+		<div class="float">
+			<div bind:clientHeight={floatHeight}>
+				<Clues />
+				<Keyboard />
+			</div>
 		</div>
 		<Map />
 	</div>
@@ -104,6 +108,12 @@
 		}
 	}
 
+	.float {
+		@media (min-width: 768px) {
+			flex: 0 0 300px;
+		}
+	}
+
 	@media (max-width: 767px) {
 		.float,
 		nav {
@@ -125,10 +135,11 @@
 	}
 
 	nav {
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-
+		div {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+		}
 		@media (min-width: 768px) {
 			margin-top: 4em;
 			margin-bottom: 1em;

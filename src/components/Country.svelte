@@ -66,13 +66,12 @@
 	}
 
 	path {
-		fill: transparent;
 		stroke: rgba(var(--color-accent), 0.9);
 		fill: rgb(var(--color-accent));
 		fill-opacity: 0.1;
 		stroke-width: 2;
 		stroke-linecap: square;
-		transition: fill 0.25s;
+		transition: fill-opacity 0.25s;
 
 		.hovered & {
 			fill-opacity: 0.4;

@@ -1,6 +1,6 @@
 <script>
 	import Keyboard from 'svelte-keyboard';
-	import { width, currentGuess } from '../store';
+	import { mobile, currentGuess } from '../store';
 	import { enterGuess } from '../controller';
 
 	const onKeydown = ({ detail }) => {
@@ -16,7 +16,7 @@
 	};
 </script>
 
-{#if $width < 768}
+{#if $mobile}
 	<div>
 		<Keyboard
 			on:keydown={onKeydown}

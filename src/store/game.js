@@ -3,7 +3,7 @@ import { writable, derived, get } from 'svelte/store';
 import { countries, countryList, projections } from '../geo';
 import { mapSize, pickedClue, currentGuess, completedGames } from './state';
 import { hardMode, currentPuzzle } from './settings';
-import { smartquotes, filledArray } from '../utils';
+import { smartquotes } from '../utils';
 import { puzzles, puzzleList } from '../puzzles';
 
 const currentPuzzleDate = derived(currentPuzzle, ($currentPuzzle) => puzzleList[$currentPuzzle]);
@@ -62,9 +62,9 @@ const alreadyCompleted = derived(
 		!!$completedGames.find(({ puzzle }) => puzzle === $currentPuzzleDate)
 );
 
-const solutions = writable(filledArray(get(clues).length, false));
+const solutions = writable();
 
-const guessCounts = writable(filledArray(get(clues).length, 0));
+const guessCounts = writable();
 
 const pickedCountry = derived(
 	[clues, pickedClue],
@@ -137,11 +137,6 @@ const formattedGuess = derived([currentGuess, guessedCountry], ([$currentGuess, 
 		: null
 );
 
-const ready = derived(
-	[clues, solutions],
-	([$clues, $solutions]) => $clues.length === $solutions.length
-);
-
 const sortedClues = derived([clues, solutions], ([$clues, $solutions]) =>
 	[...$clues].sort((a, b) => $solutions[b.number] - $solutions[a.number])
 );
@@ -162,7 +157,6 @@ export {
 	guessCounts,
 	win,
 	shareMessage,
-	ready,
 	currentPuzzleDate,
 	sortedClues,
 	alreadyCompleted,

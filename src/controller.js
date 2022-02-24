@@ -21,7 +21,6 @@ import {
 	guessesPerClue,
 	startTime,
 	currentPuzzle,
-	showMap,
 	shareMessage,
 	submittedOnce,
 } from './store';
@@ -91,8 +90,6 @@ export const focusSearch = () => {
 	el.focus();
 };
 
-currentPuzzle.subscribe(() => showMap.set(false));
-
 clueList.subscribe(($clueList) => {
 	solutions.set(filledArray($clueList.length, false));
 	guessCounts.set(filledArray($clueList.length, 0));
@@ -100,9 +97,7 @@ clueList.subscribe(($clueList) => {
 	hoveredClue.set(null);
 	currentGuess.set('');
 	previousGuess.set();
-
 	startTime.set(new Date().toISOString());
-	showMap.set(true);
 });
 
 pickedClue.subscribe(() => {
@@ -110,7 +105,7 @@ pickedClue.subscribe(() => {
 	submittedOnce.set(false);
 });
 
-win.subscribe(($win) => {
+win.subscribe(async ($win) => {
 	if (!get(alreadyCompleted) && $win) {
 		winVisible.set(true);
 
@@ -121,7 +116,7 @@ win.subscribe(($win) => {
 			endTime: new Date().toISOString(),
 		};
 
-		completedGames.update((games) => [game, ...games]);
+		setTimeout(() => completedGames.update((games) => [game, ...games]), 750);
 	}
 });
 
